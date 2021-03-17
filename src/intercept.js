@@ -8,24 +8,51 @@
  * If you want to add overwrites for @magento/venia-ui components you can use
  * moduleOverrideWebpackPlugin and componentOverrideMapping
  */
+const moduleOverrideWebpackPlugin = require('./moduleOverrideWebpackPlugin');
+const componentOverrideMapping = require('./componentOverrideMapping')
+
 module.exports = targets => {
     targets.of('@magento/pwa-buildpack').specialFeatures.tap(flags => {
         /**
          *  Wee need to activated esModules and cssModules to allow build pack to load our extension
          * {@link https://magento.github.io/pwa-studio/pwa-buildpack/reference/configure-webpack/#special-flags}.
          */
-        flags[targets.name] = {esModules: true, cssModules: true};
+        flags[targets.name] = {esModules: true, cssModules: true, graphqlQueries: true};
     });
 
-    console.log(1);
-    targets.of('@magento/venia-ui').routes.tap(
-        routesArray => {
-            routesArray.push({
-                name: 'Test Page',
-                pattern: '/test',
-                path: '/multisafepay-payment-integration/src/components/page1'
-            });
+    const regularPaymentMethods = [
+        'multisafepay',
+        'multisafepay_visa',
+        'multisafepay_mastercard',
+        'multisafepay_cbc'
+    ];
 
-            return routesArray;
-        });
+    const giftcardsPaymentMethods = [
+        'multisafepay_babygiftcard'
+    ];
+
+    const gatewaysPath = '@multisafepay/multisafepay-payment-integration/src/components/gateways/',
+        giftcardsPath = '@multisafepay/multisafepay-payment-integration/src/components/giftcards/';
+
+    regularPaymentMethods.map((method) =>
+        targets.of('@magento/venia-ui').checkoutPagePaymentTypes.tap(
+            checkoutPagePaymentTypes => checkoutPagePaymentTypes.add({
+                paymentCode: method,
+                importPath: gatewaysPath + method
+            }),
+        )
+    );
+
+    giftcardsPaymentMethods.map((method) =>
+        targets.of('@magento/venia-ui').checkoutPagePaymentTypes.tap(
+            checkoutPagePaymentTypes => checkoutPagePaymentTypes.add({
+                paymentCode: method,
+                importPath: giftcardsPath + method
+            }),
+        )
+    );
+
+    targets.of('@magento/pwa-buildpack').webpackCompiler.tap(compiler => {
+        new moduleOverrideWebpackPlugin(componentOverrideMapping).apply(compiler);
+    })
 };
