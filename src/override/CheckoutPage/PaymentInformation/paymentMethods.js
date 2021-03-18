@@ -1,15 +1,15 @@
 import React from 'react';
-import { shape, string, bool, func } from 'prop-types';
-import { RadioGroup } from 'informed';
-import { useIntl } from 'react-intl';
-
-import { usePaymentMethods } from '@magento/peregrine/lib/talons/CheckoutPage/PaymentInformation/usePaymentMethods';
-
-import { mergeClasses } from '@magento/venia-ui/lib/classify';
+import {shape, string, bool, func} from 'prop-types';
+import {RadioGroup} from 'informed';
+import {useIntl} from 'react-intl';
+import {usePaymentMethods} from '@magento/peregrine/lib/talons/CheckoutPage/PaymentInformation/usePaymentMethods';
+import {mergeClasses} from '@magento/venia-ui/lib/classify';
+import {isMultisafepayPayment} from '../../../utils/Payment';
 import Radio from '@magento/venia-ui/lib/components/RadioGroup/radio';
-import paymentMethodOperations from '@magento/venia-ui/lib/components/CheckoutPage/PaymentInformation/paymentMethods.gql';
+import paymentMethodOperations from './paymentMethods.gql';
 import defaultClasses from '@magento/venia-ui/lib/components/CheckoutPage/PaymentInformation/paymentMethods.css';
 import payments from '@magento/venia-ui/lib/components/CheckoutPage/PaymentInformation/paymentMethodCollection';
+import Image from '@magento/venia-ui/lib/components/Image';
 
 const PaymentMethods = props => {
     const {
@@ -20,7 +20,7 @@ const PaymentMethods = props => {
         shouldSubmit
     } = props;
 
-    const { formatMessage } = useIntl();
+    const {formatMessage} = useIntl();
 
     const classes = mergeClasses(defaultClasses, propClasses);
 
@@ -40,26 +40,60 @@ const PaymentMethods = props => {
     }
 
     const radios = availablePaymentMethods
-        .map(({ code, title }) => {
+        .map(({code, title, multisafepay_available_issuers}, index) => {
             // If we don't have an implementation for a method type, ignore it.
             if (!Object.keys(payments).includes(code)) {
                 return;
             }
 
-            const isSelected = currentSelectedPaymentMethod === code;
+            const multisafepayPaymentAdditionalData = availablePaymentMethods[index].multisafepay_additional_data;
 
+            const isSelected = isMultisafepayPayment(code)
+                ? multisafepayPaymentAdditionalData.is_preselected || currentSelectedPaymentMethod === code
+                : currentSelectedPaymentMethod === code;
             const PaymentMethodComponent = payments[code];
-            const renderedComponent = isSelected ? (
+
+            const paymentComponent = isMultisafepayPayment(code) ? (
                 <PaymentMethodComponent
                     onPaymentSuccess={onPaymentSuccess}
                     onPaymentError={onPaymentError}
                     resetShouldSubmit={resetShouldSubmit}
                     shouldSubmit={shouldSubmit}
                     currentSelectedPaymentMethod={currentSelectedPaymentMethod}
+                    paymentIssuers={availablePaymentMethods[index].multisafepay_available_issuers}
                 />
-            ) : null;
+            ) : (
+                <PaymentMethodComponent
+                    onPaymentSuccess={onPaymentSuccess}
+                    onPaymentError={onPaymentError}
+                    resetShouldSubmit={resetShouldSubmit}
+                    shouldSubmit={shouldSubmit}
+                />
+            )
 
-            return (
+            const renderedComponent = isSelected ? paymentComponent : null;
+            const {image: imageSrc} = multisafepayPaymentAdditionalData;
+
+            return isMultisafepayPayment(code) && imageSrc ? (
+                <div key={code} className={classes.payment_method}>
+                    <Image
+                        alt={title}
+                        classes={{image: classes.image}}
+                        src={imageSrc}
+                        width={'50px'}
+                        height={'40%'}
+                    />
+                    <Radio
+                        label={title}
+                        value={code}
+                        classes={{
+                            label: classes.radio_label
+                        }}
+                        checked={isSelected}
+                    />
+                    {renderedComponent}
+                </div>
+            ) : (
                 <div key={code} className={classes.payment_method}>
                     <Radio
                         label={title}
