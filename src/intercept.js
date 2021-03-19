@@ -12,6 +12,9 @@ const moduleOverrideWebpackPlugin = require('./moduleOverrideWebpackPlugin');
 const componentOverrideMapping = require('./componentOverrideMapping')
 
 module.exports = targets => {
+    const peregrineTargets = targets.of('@magento/peregrine');
+    const talonsTarget = peregrineTargets.talons;
+
     targets.of('@magento/pwa-buildpack').specialFeatures.tap(flags => {
         /**
          *  Wee need to activated esModules and cssModules to allow build pack to load our extension
@@ -19,6 +22,18 @@ module.exports = targets => {
          */
         flags[targets.name] = {esModules: true, cssModules: true, graphqlQueries: true};
     });
+
+    talonsTarget.tap(talonWrapperConfig => {
+        talonWrapperConfig.CheckoutPage.useCheckoutPage.wrapWith(
+            '@multisafepay/multisafepay-payment-integration/src/plugins/checkoutPageTalonPlugin'
+        );
+    });
+
+    talonsTarget.tap(talonWrapperConfig => {
+        talonWrapperConfig.CartPage.useCartPage.wrapWith(
+            '@multisafepay/multisafepay-payment-integration/src/plugins/cartPageTalonPlugin'
+        );
+    })
 
     const regularPaymentMethods = [
         'multisafepay',
