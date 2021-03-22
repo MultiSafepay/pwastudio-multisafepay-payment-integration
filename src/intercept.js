@@ -13,6 +13,8 @@ const componentOverrideMapping = require('./componentOverrideMapping')
 
 module.exports = targets => {
     const peregrineTargets = targets.of('@magento/peregrine');
+    const veniaTargets = targets.of('@magento/venia-ui');
+    const buildpackTargets = targets.of('@magento/pwa-buildpack');
     const talonsTarget = peregrineTargets.talons;
 
     targets.of('@magento/pwa-buildpack').specialFeatures.tap(flags => {
@@ -22,6 +24,17 @@ module.exports = targets => {
          */
         flags[targets.name] = {esModules: true, cssModules: true, graphqlQueries: true};
     });
+
+    veniaTargets.routes.tap(
+        routesArray => {
+            routesArray.push({
+                name: 'Checkout Success Page',
+                pattern: '/multisafepay/checkout/success/:order?/maskedId/:maskedId?',
+                path: '@multisafepay/multisafepay-payment-integration/src/components/successPage'
+            });
+
+            return routesArray;
+        });
 
     talonsTarget.tap(talonWrapperConfig => {
         talonWrapperConfig.CheckoutPage.useCheckoutPage.wrapWith(
@@ -50,7 +63,7 @@ module.exports = targets => {
         giftcardsPath = '@multisafepay/multisafepay-payment-integration/src/components/giftcards/';
 
     regularPaymentMethods.map((method) =>
-        targets.of('@magento/venia-ui').checkoutPagePaymentTypes.tap(
+        veniaTargets.checkoutPagePaymentTypes.tap(
             checkoutPagePaymentTypes => checkoutPagePaymentTypes.add({
                 paymentCode: method,
                 importPath: gatewaysPath + method
@@ -59,7 +72,7 @@ module.exports = targets => {
     );
 
     giftcardsPaymentMethods.map((method) =>
-        targets.of('@magento/venia-ui').checkoutPagePaymentTypes.tap(
+        veniaTargets.checkoutPagePaymentTypes.tap(
             checkoutPagePaymentTypes => checkoutPagePaymentTypes.add({
                 paymentCode: method,
                 importPath: giftcardsPath + method
@@ -67,7 +80,7 @@ module.exports = targets => {
         )
     );
 
-    targets.of('@magento/pwa-buildpack').webpackCompiler.tap(compiler => {
+    buildpackTargets.webpackCompiler.tap(compiler => {
         new moduleOverrideWebpackPlugin(componentOverrideMapping).apply(compiler);
     })
 };
