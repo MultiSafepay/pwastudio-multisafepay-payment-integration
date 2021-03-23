@@ -6,8 +6,6 @@ import {
     useMutation,
     useApolloClient
 } from '@apollo/client';
-import {useCartContext} from "@magento/peregrine/lib/context/cart";
-import {clearCartDataFromCache} from "@magento/peregrine/lib/Apollo/clearCartDataFromCache";
 import Icon from "@magento/venia-ui/lib/components/Icon";
 import {useToasts} from "@magento/peregrine";
 import {AlertCircle as AlertCircleIcon} from 'react-feather';
@@ -15,7 +13,6 @@ import {AlertCircle as AlertCircleIcon} from 'react-feather';
 const wrapUseCartPage = (original) => {
     return function useCartPage(...args) {
         const location = useLocation();
-        const history = useHistory();
         const params = new URLSearchParams(location.search);
         const result = original(...args);
         const storage = new BrowserPersistence();
@@ -31,8 +28,6 @@ const wrapUseCartPage = (original) => {
             restoreQuote,
             {
                 data: restoreQuoteData,
-                error: restoreQuoteError,
-                loading: restoreQuoteLoading,
                 called: restoreQuoteCalled
             }
         ] = useMutation(restoreQuoteMutation);
@@ -40,17 +35,13 @@ const wrapUseCartPage = (original) => {
         if (params.get('multisafepayRestore') && params.get('maskedId')) {
             const restoreCartId = params.get('maskedId');
             const restoredCartId = storage.getItem('restoredCart');
-            const [{cartId} , {createCart, clearCartId, saveCartId}] = useCartContext();
+            const [, {createCart, clearCartId, saveCartId}] = useCartContext();
             const [, {addToast}] = useToasts();
             const apolloClient = useApolloClient();
 
             useEffect(() => {
                 async function restoreQuoteProcess() {
                     try {
-                        await createCart({
-                            restoreCartId
-                        });
-
                         const restoredQuoteResult = await restoreQuote({
                             variables: {
                                 cartId: restoreCartId
@@ -99,6 +90,10 @@ const wrapUseCartPage = (original) => {
                     setIsCartUpdating,
                     shouldShowLoadingIndicator: true
                 };
+            }
+
+            if (restoreQuoteData) {
+                return window.location.href = '/cart';
             }
         }
 

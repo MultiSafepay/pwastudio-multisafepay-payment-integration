@@ -1,20 +1,26 @@
-import { useCallback, useEffect } from 'react';
-import { useQuery, useMutation } from '@apollo/client';
+import { useCallback, useEffect, useState } from 'react';
+import { useMutation } from '@apollo/client';
 import mergeOperations from '@magento/peregrine/lib/util/shallowMerge';
 import { useCartContext } from '@magento/peregrine/lib/context/cart';
 
 import DEFAULT_OPERATIONS from './basePayment.gql';
 
-
-export const useBasePayment = props => {
+/**
+ *
+ * @param props
+ * @returns {{onBillingAddressChangedError: (function(): void), onBillingAddressChangedSuccess: (function(): void), handleIssuerSelection: (function(*=): void)}}
+ */
+export const useIdealPayment = props => {
+    const defaultIssuer = '3151';
     const operations = mergeOperations(DEFAULT_OPERATIONS, props.operations);
 
     const {
-        setPaymentMethodOnCartMutation
+        setIdealPaymentMethodOnCartMutation
     } = operations;
 
     const [{ cartId }] = useCartContext();
     const { currentSelectedPaymentMethod: selectedMethod  } = props;
+    const [issuer, setIssuer] = useState(defaultIssuer);
 
     const { resetShouldSubmit, onPaymentSuccess, onPaymentError } = props;
 
@@ -25,7 +31,7 @@ export const useBasePayment = props => {
             called: paymentMethodMutationCalled,
             loading: paymentMethodMutationLoading
         }
-    ] = useMutation(setPaymentMethodOnCartMutation);
+    ] = useMutation(setIdealPaymentMethodOnCartMutation);
 
     /**
      * This function will be called if cant not set address.
@@ -34,14 +40,21 @@ export const useBasePayment = props => {
         resetShouldSubmit();
     }, [resetShouldSubmit]);
 
+    const handleIssuerSelection = useCallback(
+        value => {
+            setIssuer(value);
+        },
+        [cartId, setIssuer]
+    );
+
     /**
      * This function will be called if address was successfully set.
      */
     const onBillingAddressChangedSuccess = useCallback(() => {
         updatePaymentMethod({
-            variables: { cartId, selectedMethod }
+            variables: { cartId, selectedMethod, issuer }
         });
-    }, [updatePaymentMethod, cartId]);
+    }, [updatePaymentMethod, cartId, issuer]);
 
     useEffect(() => {
         const paymentMethodMutationCompleted =
@@ -65,6 +78,7 @@ export const useBasePayment = props => {
 
     return {
         onBillingAddressChangedError,
-        onBillingAddressChangedSuccess
+        onBillingAddressChangedSuccess,
+        handleIssuerSelection
     };
 };

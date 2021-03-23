@@ -48,11 +48,14 @@ module.exports = targets => {
         );
     })
 
-    const regularPaymentMethods = [
+    const paymentMethods = [
         'multisafepay',
         'multisafepay_visa',
         'multisafepay_mastercard',
-        'multisafepay_cbc'
+        'multisafepay_cbc',
+        'multisafepay_ideal',
+        'multisafepay_afterpay',
+        'multisafepay_in3'
     ];
 
     const giftcardsPaymentMethods = [
@@ -62,7 +65,7 @@ module.exports = targets => {
     const gatewaysPath = '@multisafepay/multisafepay-payment-integration/src/components/gateways/',
         giftcardsPath = '@multisafepay/multisafepay-payment-integration/src/components/giftcards/';
 
-    regularPaymentMethods.map((method) =>
+    paymentMethods.map((method) =>
         veniaTargets.checkoutPagePaymentTypes.tap(
             checkoutPagePaymentTypes => checkoutPagePaymentTypes.add({
                 paymentCode: method,

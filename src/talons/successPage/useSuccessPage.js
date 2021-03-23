@@ -1,13 +1,19 @@
-import { useUserContext } from '@magento/peregrine/lib/context/user';
+import {useUserContext} from '@magento/peregrine/lib/context/user';
 import mergeOperations from "@magento/peregrine/lib/util/shallowMerge";
 import DEFAULT_OPERATIONS from "./successPage.gql";
 import {
-    useQuery
+    useQuery,
+    useApolloClient
 } from '@apollo/client';
+import {useToasts} from "@magento/peregrine";
+import {AlertCircle as AlertCircleIcon} from 'react-feather';
+import Icon from "@magento/venia-ui/lib/components/Icon";
+import React from "react";
+import {clearCartDataFromCache} from "@magento/peregrine/lib/Apollo/clearCartDataFromCache";
 
 export const flatten = data => {
-    const { cart } = data;
-    const { shipping_addresses } = cart;
+    const {multisafepayCart: cart} = data;
+    const {shipping_addresses} = cart;
     const address = shipping_addresses[0];
 
     const shippingMethod = `${
@@ -30,30 +36,51 @@ export const flatten = data => {
 
 export const useSuccessPage = props => {
     const operations = mergeOperations(DEFAULT_OPERATIONS, props.operations);
-    const { orderNumber, maskedId: cartId } = props;
-
-    const {
-        getOrderDetailsQuery
-    } = operations;
-
-    console.log(orderNumber, cartId);
+    const {getOrderDetailsQuery} = operations;
+    const {maskedId: cartId} = props;
+    const [, {addToast}] = useToasts();
+    const errorIcon = <Icon src={AlertCircleIcon} size={20}/>;
+    const [{isSignedIn}] = useUserContext();
+    const apolloClient = useApolloClient();
 
     const {
         data: orderDetailsData,
+        error: orderDetailsError,
         loading: orderDetailsLoading
     } = useQuery(getOrderDetailsQuery, {
+        fetchPolicy: 'cache-and-network',
         skip: !cartId,
         variables: {
             cartId
         }
     });
 
-    const { data } = props;
-    const [{ isSignedIn }] = useUserContext();
+    if (orderDetailsError) {
+        addToast({
+            type: 'error',
+            icon: errorIcon,
+            message: orderDetailsError.message,
+            dismissable: true,
+            timeout: 7000
+        });
+    }
+
+    if (!orderDetailsData || orderDetailsLoading) {
+        return {
+            flatData: [],
+            isSignedIn,
+            isLoading: true,
+            hasError: orderDetailsError
+        };
+    }
+
+    clearCartDataFromCache(apolloClient);
 
     return {
-        flatData: flatten(data),
-        orderDetailsLoading,
-        isLoading: true
+        flatData: flatten(orderDetailsData),
+        data: { cart: orderDetailsData.multisafepayCart},
+        isSignedIn,
+        isLoading: false,
+        hasError: orderDetailsError
     };
 };

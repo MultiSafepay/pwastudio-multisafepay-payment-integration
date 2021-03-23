@@ -35,6 +35,8 @@ const PaymentMethods = props => {
         isLoading
     } = talonProps;
 
+    let multisafepayPreselectedMethod = null;
+
     if (isLoading) {
         return null;
     }
@@ -48,9 +50,11 @@ const PaymentMethods = props => {
 
             const multisafepayPaymentAdditionalData = availablePaymentMethods[index].multisafepay_additional_data;
 
-            const isSelected = isMultisafepayPayment(code)
-                ? multisafepayPaymentAdditionalData.is_preselected || currentSelectedPaymentMethod === code
-                : currentSelectedPaymentMethod === code;
+            if (isMultisafepayPayment(code) && multisafepayPaymentAdditionalData.is_preselected) {
+                multisafepayPreselectedMethod = code;
+            }
+
+            const isSelected = currentSelectedPaymentMethod === code;
             const PaymentMethodComponent = payments[code];
 
             const paymentComponent = isMultisafepayPayment(code) ? (
@@ -81,7 +85,6 @@ const PaymentMethods = props => {
                         classes={{image: classes.image}}
                         src={imageSrc}
                         width={'50px'}
-                        height={'40%'}
                     />
                     <Radio
                         label={title}
@@ -130,7 +133,7 @@ const PaymentMethods = props => {
         <div className={classes.root}>
             <RadioGroup
                 field="selectedPaymentMethod"
-                initialValue={initialSelectedMethod}
+                initialValue={multisafepayPreselectedMethod ? multisafepayPreselectedMethod : initialSelectedMethod}
             >
                 {radios}
             </RadioGroup>

@@ -15,7 +15,6 @@ import {
 import {clearCartDataFromCache} from "@magento/peregrine/lib/Apollo/clearCartDataFromCache";
 import {CHECKOUT_STEP} from "@magento/peregrine/lib/talons/CheckoutPage/useCheckoutPage";
 import mergeOperations from "@magento/peregrine/lib/util/shallowMerge";
-import {useUserContext} from "@magento/peregrine/lib/context/user";
 import Icon from "@magento/venia-ui/lib/components/Icon";
 
 const wrapUseCheckoutPage = (original) => {
@@ -58,9 +57,7 @@ const wrapUseCheckoutPage = (original) => {
         const [, {addToast}] = useToasts();
 
         const [{cartId}, {createCart, removeCart}] = useCartContext();
-        const [{isSignedIn}] = useUserContext();
         const apolloClient = useApolloClient();
-        const [setActiveContent] = useState('checkout');
         const [fetchCartId] = useMutation(createCartMutation);
 
         const [setReviewOrderButtonClicked] = useState(
@@ -103,12 +100,6 @@ const wrapUseCheckoutPage = (original) => {
         }, [cartId, getOrderDetails]);
 
         useEffect(() => {
-            if (isSignedIn) {
-                setActiveContent('checkout');
-            }
-        }, [isSignedIn]);
-
-        useEffect(() => {
             async function placeOrderAndCleanup() {
                 try {
                     const result = await placeOrder({
@@ -131,6 +122,13 @@ const wrapUseCheckoutPage = (original) => {
                             } = orderMultisafepayUrlData;
 
                             if (!paymentErrors && paymentRedirectUrl !== '') {
+                                await removeCart();
+                                await clearCartDataFromCache(apolloClient);
+
+                                await createCart({
+                                    fetchCartId
+                                });
+
                                 return window.location = paymentRedirectUrl;
                             } else {
                                 if (paymentErrors) {
@@ -156,6 +154,10 @@ const wrapUseCheckoutPage = (original) => {
                                         if (process.env.NODE_ENV !== 'production') {
                                             console.error(paymentErrors);
                                         }
+
+                                        await createCart({
+                                            cartId
+                                        });
 
                                         resetReviewOrderButtonClicked();
                                         setCheckoutStep(CHECKOUT_STEP.PAYMENT);
