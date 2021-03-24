@@ -1,7 +1,9 @@
 /**
- * Custom index for the extension attention this file should be not delete!
- * It is use as main file but this can be empty by default only need to exits.
+ * Copyright © 2021 MultiSafepay, Inc. All rights reserved.
+ * See DISCLAIMER.md for disclaimer details.
  *
- * A project index.js should contain default exports like:
- * export { default } from './components/main';
+ * @license OSL-3.0 (Open Software License ("OSL") v. 3.0)
+ * @package @multisafepay/multisafepay-payment-integration
+ * @link https://github.com/MultiSafepay/pwastudio-multisafepay-payment-integration
+ *
  */

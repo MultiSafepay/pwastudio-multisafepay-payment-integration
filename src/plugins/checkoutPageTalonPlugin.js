@@ -1,3 +1,12 @@
+/**
+ * Copyright © 2021 MultiSafepay, Inc. All rights reserved.
+ * See DISCLAIMER.md for disclaimer details.
+ *
+ * @license OSL-3.0 (Open Software License ("OSL") v. 3.0)
+ * @package @multisafepay/multisafepay-payment-integration
+ * @link https://github.com/MultiSafepay/pwastudio-multisafepay-payment-integration
+ *
+ */
 import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {AlertCircle as AlertCircleIcon} from 'react-feather';
 
@@ -22,6 +31,7 @@ const wrapUseCheckoutPage = (original) => {
         const operations = mergeOperations(DEFAULT_OPERATIONS, MULTISAFEPAY_OPERATIONS);
         const result = original(...args);
         const errorIcon = <Icon src={AlertCircleIcon} size={20}/>;
+        let processedOrderData = [];
 
         const {
             activeContent,
@@ -60,11 +70,7 @@ const wrapUseCheckoutPage = (original) => {
         const apolloClient = useApolloClient();
         const [fetchCartId] = useMutation(createCartMutation);
 
-        const [setReviewOrderButtonClicked] = useState(
-            false
-        );
-
-        const [
+        let [
             placeOrder,
             {
                 data: placeOrderData,
@@ -73,6 +79,8 @@ const wrapUseCheckoutPage = (original) => {
                 called: placeOrderCalled
             }
         ] = useMutation(placeMultisafepayOrderMutation);
+
+        const [orderButtonPress, setOrderButtonPress] = useState();
 
         const [
             restoreQuote,
@@ -84,24 +92,29 @@ const wrapUseCheckoutPage = (original) => {
             }
         ] = useMutation(restoreQuoteMutation);
 
-        const [
+        let [
             getOrderDetails,
-            {data: orderDetailsData, loading: orderDetailsLoading}
+            {
+                data: orderDetailsData,
+                loading: orderDetailsLoading
+            }
         ] = useLazyQuery(getOrderDetailsQuery, {
             fetchPolicy: 'no-cache'
         });
 
         const handlePlaceOrder = useCallback(async () => {
+            setOrderButtonPress(true);
             getOrderDetails({
                 variables: {
                     cartId
                 }
             });
-        }, [cartId, getOrderDetails]);
+        }, [cartId, getOrderDetails, setOrderButtonPress]);
 
         useEffect(() => {
             async function placeOrderAndCleanup() {
                 try {
+                    setOrderButtonPress(false);
                     const result = await placeOrder({
                         variables: {
                             cartId
@@ -124,7 +137,6 @@ const wrapUseCheckoutPage = (original) => {
                             if (!paymentErrors && paymentRedirectUrl !== '') {
                                 await removeCart();
                                 await clearCartDataFromCache(apolloClient);
-
                                 await createCart({
                                     fetchCartId
                                 });
@@ -132,10 +144,6 @@ const wrapUseCheckoutPage = (original) => {
                                 return window.location = paymentRedirectUrl;
                             } else {
                                 if (paymentErrors) {
-                                    await createCart({
-                                        cartId
-                                    });
-
                                     const restoredQuoteData = await restoreQuote({
                                         variables: {
                                             cartId
@@ -154,11 +162,6 @@ const wrapUseCheckoutPage = (original) => {
                                         if (process.env.NODE_ENV !== 'production') {
                                             console.error(paymentErrors);
                                         }
-
-                                        await createCart({
-                                            cartId
-                                        });
-
                                         resetReviewOrderButtonClicked();
                                         setCheckoutStep(CHECKOUT_STEP.PAYMENT);
                                     }
@@ -183,7 +186,7 @@ const wrapUseCheckoutPage = (original) => {
                 }
             }
 
-            if (orderDetailsData && !placeOrderCalled) {
+            if (orderDetailsData && orderButtonPress) {
                 placeOrderAndCleanup();
             }
         }, [
@@ -194,16 +197,19 @@ const wrapUseCheckoutPage = (original) => {
             orderDetailsData,
             placeOrder,
             placeOrderCalled,
-            removeCart
+            removeCart,
+            orderButtonPress,
+            setOrderButtonPress,
+            placeOrderData
         ]);
 
         const orderMultisafepayUrlData =
             (placeOrderData && placeOrderData.placeOrder.order.multisafepay_payment_url) || null;
 
         if (orderMultisafepayUrlData && (orderMultisafepayUrlData.payment_url || orderMultisafepayUrlData.error)) {
-            return restoreQuoteData ?
-                Object.assign({}, result, {isLoading: false, orderNumber: null})
-                : Object.assign({}, result, {isLoading: true, orderNumber: null});
+            return restoreQuoteData && !restoreQuoteLoading ?
+                Object.assign({}, result, {isLoading: false, orderNumber: null, handlePlaceOrder: handlePlaceOrder})
+                : Object.assign({}, result, {isLoading: true, orderNumber: null, handlePlaceOrder: handlePlaceOrder});
         }
 
         return {

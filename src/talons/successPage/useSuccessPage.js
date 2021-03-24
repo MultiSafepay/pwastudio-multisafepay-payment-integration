@@ -1,3 +1,12 @@
+/**
+ * Copyright © 2021 MultiSafepay, Inc. All rights reserved.
+ * See DISCLAIMER.md for disclaimer details.
+ *
+ * @license OSL-3.0 (Open Software License ("OSL") v. 3.0)
+ * @package @multisafepay/multisafepay-payment-integration
+ * @link https://github.com/MultiSafepay/pwastudio-multisafepay-payment-integration
+ *
+ */
 import {useUserContext} from '@magento/peregrine/lib/context/user';
 import mergeOperations from "@magento/peregrine/lib/util/shallowMerge";
 import DEFAULT_OPERATIONS from "./successPage.gql";
@@ -78,7 +87,7 @@ export const useSuccessPage = props => {
 
     return {
         flatData: flatten(orderDetailsData),
-        data: { cart: orderDetailsData.multisafepayCart},
+        data: {cart: orderDetailsData.multisafepayCart},
         isSignedIn,
         isLoading: false,
         hasError: orderDetailsError

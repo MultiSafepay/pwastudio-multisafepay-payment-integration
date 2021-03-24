@@ -1,10 +1,19 @@
+/**
+ * Copyright © 2021 MultiSafepay, Inc. All rights reserved.
+ * See DISCLAIMER.md for disclaimer details.
+ *
+ * @license OSL-3.0 (Open Software License ("OSL") v. 3.0)
+ * @package @multisafepay/multisafepay-payment-integration
+ * @link https://github.com/MultiSafepay/pwastudio-multisafepay-payment-integration
+ *
+ */
 import React from 'react';
-import { mergeClasses } from '@magento/venia-ui/lib/classify';
-import { shape, string, bool, func } from 'prop-types';
+import {mergeClasses} from '@magento/venia-ui/lib/classify';
+import {shape, string, bool, func} from 'prop-types';
 import BillingAddress from '@magento/venia-ui/lib/components/CheckoutPage/BillingAddress';
 
-import { useAfterpayIn3Payment } from '../../talons/useAfterpayIn3Payment';
-import defaultClasses from './afterpayIn3Payment.css';
+import {useAfterpayIn3Payment} from '../../talons/useAfterpayIn3Payment';
+import defaultClasses from '../basePaymentComponent/basePayment.css';
 import {FormattedMessage, useIntl} from 'react-intl';
 import Select from '@magento/venia-ui/lib/components/Select';
 import Label from "@magento/venia-ui/lib/components/Checkout/label";
@@ -15,19 +24,15 @@ import combine from "@magento/venia-ui/lib/util/combineValidators";
 
 const AfterpayIn3Payment = props => {
     const classes = mergeClasses(defaultClasses, props.classes);
-    const { formatMessage } = useIntl();
-    const genders =[
+    const {formatMessage} = useIntl();
+    const genders = [
         {
             "value": "mr",
-            "label": 'Mr.',
+            "label": "Mr.",
         },
         {
             "value": "mrs",
-            "label": 'Mrs.'
-        },
-        {
-            "value": "miss",
-            "label": 'Miss'
+            "label": "Mrs."
         }
     ];
 
@@ -37,6 +42,13 @@ const AfterpayIn3Payment = props => {
         onPaymentError,
         currentSelectedPaymentMethod
     } = props;
+
+    if (currentSelectedPaymentMethod === 'multisafepay_afterpay') {
+        genders.push({
+            value: "miss",
+            label: 'Miss',
+        })
+    }
 
     const {
         onBillingAddressChangedError,
@@ -84,7 +96,7 @@ const AfterpayIn3Payment = props => {
                 <FormattedMessage
                     id={'multiSafepayPayment.note'}
                     defaultMessage={
-                        'Note: Your will be redirected to the payment page.'
+                        'Note: You will be redirected to the payment page.'
                     }
                 />
             </p>
@@ -98,7 +110,7 @@ const AfterpayIn3Payment = props => {
 };
 
 AfterpayIn3Payment.propTypes = {
-    classes: shape({ root: string }),
+    classes: shape({root: string}),
     shouldSubmit: bool.isRequired,
     onPaymentSuccess: func,
     onPaymentError: func,

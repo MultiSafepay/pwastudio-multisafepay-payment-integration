@@ -1,7 +1,16 @@
-import { useCallback, useEffect, useState } from 'react';
-import { useMutation } from '@apollo/client';
+/**
+ * Copyright © 2021 MultiSafepay, Inc. All rights reserved.
+ * See DISCLAIMER.md for disclaimer details.
+ *
+ * @license OSL-3.0 (Open Software License ("OSL") v. 3.0)
+ * @package @multisafepay/multisafepay-payment-integration
+ * @link https://github.com/MultiSafepay/pwastudio-multisafepay-payment-integration
+ *
+ */
+import {useCallback, useEffect, useState} from 'react';
+import {useMutation} from '@apollo/client';
 import mergeOperations from '@magento/peregrine/lib/util/shallowMerge';
-import { useCartContext } from '@magento/peregrine/lib/context/cart';
+import {useCartContext} from '@magento/peregrine/lib/context/cart';
 
 import DEFAULT_OPERATIONS from './basePayment.gql';
 
@@ -18,11 +27,11 @@ export const useIdealPayment = props => {
         setIdealPaymentMethodOnCartMutation
     } = operations;
 
-    const [{ cartId }] = useCartContext();
-    const { currentSelectedPaymentMethod: selectedMethod  } = props;
+    const [{cartId}] = useCartContext();
+    const {currentSelectedPaymentMethod: selectedMethod} = props;
     const [issuer, setIssuer] = useState(defaultIssuer);
 
-    const { resetShouldSubmit, onPaymentSuccess, onPaymentError } = props;
+    const {resetShouldSubmit, onPaymentSuccess, onPaymentError} = props;
 
     const [
         updatePaymentMethod,
@@ -52,7 +61,7 @@ export const useIdealPayment = props => {
      */
     const onBillingAddressChangedSuccess = useCallback(() => {
         updatePaymentMethod({
-            variables: { cartId, selectedMethod, issuer }
+            variables: {cartId, selectedMethod, issuer}
         });
     }, [updatePaymentMethod, cartId, issuer]);
 

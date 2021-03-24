@@ -1,3 +1,12 @@
+/**
+ * Copyright © 2021 MultiSafepay, Inc. All rights reserved.
+ * See DISCLAIMER.md for disclaimer details.
+ *
+ * @license OSL-3.0 (Open Software License ("OSL") v. 3.0)
+ * @package @multisafepay/multisafepay-payment-integration
+ * @link https://github.com/MultiSafepay/pwastudio-multisafepay-payment-integration
+ *
+ */
 import React from 'react';
 import {shape, string, bool, func} from 'prop-types';
 import {RadioGroup} from 'informed';
@@ -21,9 +30,7 @@ const PaymentMethods = props => {
     } = props;
 
     const {formatMessage} = useIntl();
-
     const classes = mergeClasses(defaultClasses, propClasses);
-
     const talonProps = usePaymentMethods({
         ...paymentMethodOperations
     });

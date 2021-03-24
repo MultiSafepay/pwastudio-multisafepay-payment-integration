@@ -3,11 +3,10 @@
  * See DISCLAIMER.md for disclaimer details.
  *
  * @license OSL-3.0 (Open Software License ("OSL") v. 3.0)
- * @package multisafepay-payment-integration
+ * @package @multisafepay/multisafepay-payment-integration
  * @link https://github.com/MultiSafepay/pwastudio-multisafepay-payment-integration
  *
  */
-/* eslint-disable fp/no-let */
 
 /**
  * @param {String} paymentCode

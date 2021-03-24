@@ -1,13 +1,21 @@
+/**
+ * Copyright © 2021 MultiSafepay, Inc. All rights reserved.
+ * See DISCLAIMER.md for disclaimer details.
+ *
+ * @license OSL-3.0 (Open Software License ("OSL") v. 3.0)
+ * @package @multisafepay/multisafepay-payment-integration
+ * @link https://github.com/MultiSafepay/pwastudio-multisafepay-payment-integration
+ *
+ */
 import React from 'react';
-import { mergeClasses } from '@magento/venia-ui/lib/classify';
-import { shape, string, bool, func } from 'prop-types';
+import {mergeClasses} from '@magento/venia-ui/lib/classify';
+import {shape, string, bool, func} from 'prop-types';
 import BillingAddress from '@magento/venia-ui/lib/components/CheckoutPage/BillingAddress';
 
-import { useIdealPayment } from '../../talons/useIdealPayment';
-import defaultClasses from './idealPayment.css';
-import { FormattedMessage } from 'react-intl';
+import {useIdealPayment} from '../../talons/useIdealPayment';
+import defaultClasses from '../basePaymentComponent/basePayment.css';
+import {FormattedMessage} from 'react-intl';
 import Select from '@magento/venia-ui/lib/components/Select';
-import {isRequired} from "@magento/venia-ui/lib/util/formValidators";
 
 /**
  *
@@ -58,7 +66,7 @@ const IdealPayment = props => {
                 <FormattedMessage
                     id={'multiSafepayPayment.note'}
                     defaultMessage={
-                        'Note: Your will be redirected to the payment page.'
+                        'Note: You will be redirected to the payment page.'
                     }
                 />
             </p>
@@ -72,7 +80,7 @@ const IdealPayment = props => {
 };
 
 IdealPayment.propTypes = {
-    classes: shape({ root: string }),
+    classes: shape({root: string}),
     shouldSubmit: bool.isRequired,
     onPaymentSuccess: func,
     onPaymentError: func,

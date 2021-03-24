@@ -1,21 +1,26 @@
+/**
+ * Copyright © 2021 MultiSafepay, Inc. All rights reserved.
+ * See DISCLAIMER.md for disclaimer details.
+ *
+ * @license OSL-3.0 (Open Software License ("OSL") v. 3.0)
+ * @package @multisafepay/multisafepay-payment-integration
+ * @link https://github.com/MultiSafepay/pwastudio-multisafepay-payment-integration
+ *
+ */
 import React from 'react';
-import { mergeClasses } from '@magento/venia-ui/lib/classify';
-import { shape, string, bool, func } from 'prop-types';
+import {mergeClasses} from '@magento/venia-ui/lib/classify';
+import {shape, string, bool, func} from 'prop-types';
 import BillingAddress from '@magento/venia-ui/lib/components/CheckoutPage/BillingAddress';
 
-import { useBasePayment } from '../../talons/useBasePayment';
+import {useBasePayment} from '../../talons/useBasePayment';
 import defaultClasses from './basePayment.css';
-import { FormattedMessage } from 'react-intl';
+import {FormattedMessage} from 'react-intl';
 
 /**
- * The component renders all information to handle payment.
  *
- * @param {String} props.payableTo shop owner name where you need to send.
- * @param {Boolean} props.shouldSubmit boolean value which represents if a payment nonce request has been submitted
- * @param {Function} props.onPaymentSuccess callback to invoke when the a payment nonce has been generated
- * @param {Function} props.onDropinReady callback to invoke when the braintree dropin component is ready
- * @param {Function} props.onPaymentError callback to invoke when component throws an error
- * @param {Function} props.resetShouldSubmit callback to reset the shouldSubmit flag
+ * @param props
+ * @returns {JSX.Element}
+ * @constructor
  */
 const BasePayment = props => {
     const classes = mergeClasses(defaultClasses, props.classes);
@@ -24,8 +29,7 @@ const BasePayment = props => {
         resetShouldSubmit,
         onPaymentSuccess,
         onPaymentError,
-        currentSelectedPaymentMethod,
-        paymentIssuers
+        currentSelectedPaymentMethod
     } = props;
 
     const {
@@ -44,7 +48,7 @@ const BasePayment = props => {
                 <FormattedMessage
                     id={'multiSafepayPayment.note'}
                     defaultMessage={
-                        'Note: Your will be redirected to the payment page.'
+                        'Note: You will be redirected to the payment page.'
                     }
                 />
             </p>
@@ -58,10 +62,9 @@ const BasePayment = props => {
 };
 
 BasePayment.propTypes = {
-    classes: shape({ root: string }),
+    classes: shape({root: string}),
     shouldSubmit: bool.isRequired,
     onPaymentSuccess: func,
-    onDropinReady: func,
     onPaymentError: func,
     resetShouldSubmit: func.isRequired
 };

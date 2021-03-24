@@ -1,12 +1,11 @@
 /**
- * Custom intercept file for the extension
- * By default you can only use target of @magento/pwa-buildpack.
+ * Copyright © 2021 MultiSafepay, Inc. All rights reserved.
+ * See DISCLAIMER.md for disclaimer details.
  *
- * If do want extend @magento/peregrine or @magento/venia-ui
- * you should add them to peerDependencies to your package.json
+ * @license OSL-3.0 (Open Software License ("OSL") v. 3.0)
+ * @package @multisafepay/multisafepay-payment-integration
+ * @link https://github.com/MultiSafepay/pwastudio-multisafepay-payment-integration
  *
- * If you want to add overwrites for @magento/venia-ui components you can use
- * moduleOverrideWebpackPlugin and componentOverrideMapping
  */
 const moduleOverrideWebpackPlugin = require('./moduleOverrideWebpackPlugin');
 const componentOverrideMapping = require('./componentOverrideMapping')
@@ -16,12 +15,67 @@ module.exports = targets => {
     const veniaTargets = targets.of('@magento/venia-ui');
     const buildpackTargets = targets.of('@magento/pwa-buildpack');
     const talonsTarget = peregrineTargets.talons;
+    const paymentMethods = [
+        'multisafepay',
+        'multisafepay_visa',
+        'multisafepay_mastercard',
+        'multisafepay_cbc',
+        'multisafepay_ideal',
+        'multisafepay_afterpay',
+        'multisafepay_in3',
+        'multisafepay_klarna',
+        'multisafepay_bancontact',
+        'multisafepay_amex',
+        'multisafepay_applepay',
+        'multisafepay_belfius',
+        'multisafepay_creditcard',
+        'multisafepay_dotpay',
+        'multisafepay_eps',
+        'multisafepay_giropay',
+        'multisafepay_idealqr',
+        'multisafepay_maestro',
+        'multisafepay_paysafecard',
+        'multisafepay_sofort',
+        'multisafepay_trustpay',
+        'multisafepay_alipay',
+        'multisafepay_santander',
+        'multisafepay_banktransfer',
+        'multisafepay_inghomepay',
+        'multisafepay_kbc',
+        'multisafepay_paypal',
+        'multisafepay_trustly',
+        'multisafepay_genericgateway_1',
+        'multisafepay_genericgateway_2',
+        'multisafepay_genericgateway_3'
+    ];
+
+    const giftcardMethods = [
+        'multisafepay_babygiftcard',
+        'multisafepay_beautyandwellness',
+        'multisafepay_boekenbon',
+        'multisafepay_fashioncheque',
+        'multisafepay_fashiongiftcard',
+        'multisafepay_fietsenbon',
+        'multisafepay_gezondheidsbon',
+        'multisafepay_givacard',
+        'multisafepay_good4fun',
+        'multisafepay_goodcard',
+        'multisafepay_nationaletuinbon',
+        'multisafepay_parfumcadeaukaart',
+        'multisafepay_podiumcadeaukaart',
+        'multisafepay_sportenfit',
+        'multisafepay_vvvcadeaukaart',
+        'multisafepay_webshopgiftcard',
+        'multisafepay_wellnessgiftcard',
+        'multisafepay_wijncadeau',
+        'multisafepay_winkelcheque',
+        'multisafepay_yourgift',
+        'multisafepay_genericgateway_4',
+        'multisafepay_genericgateway_5',
+        'multisafepay_genericgateway_6'
+    ];
 
     targets.of('@magento/pwa-buildpack').specialFeatures.tap(flags => {
-        /**
-         *  Wee need to activated esModules and cssModules to allow build pack to load our extension
-         * {@link https://magento.github.io/pwa-studio/pwa-buildpack/reference/configure-webpack/#special-flags}.
-         */
         flags[targets.name] = {esModules: true, cssModules: true, graphqlQueries: true};
     });
 
@@ -46,21 +100,7 @@ module.exports = targets => {
         talonWrapperConfig.CartPage.useCartPage.wrapWith(
             '@multisafepay/multisafepay-payment-integration/src/plugins/cartPageTalonPlugin'
         );
-    })
-
-    const paymentMethods = [
-        'multisafepay',
-        'multisafepay_visa',
-        'multisafepay_mastercard',
-        'multisafepay_cbc',
-        'multisafepay_ideal',
-        'multisafepay_afterpay',
-        'multisafepay_in3'
-    ];
-
-    const giftcardsPaymentMethods = [
-        'multisafepay_babygiftcard'
-    ];
+    });
 
     const gatewaysPath = '@multisafepay/multisafepay-payment-integration/src/components/gateways/',
         giftcardsPath = '@multisafepay/multisafepay-payment-integration/src/components/giftcards/';
@@ -74,7 +114,7 @@ module.exports = targets => {
         )
     );
 
-    giftcardsPaymentMethods.map((method) =>
+    giftcardMethods.map((method) =>
         veniaTargets.checkoutPagePaymentTypes.tap(
             checkoutPagePaymentTypes => checkoutPagePaymentTypes.add({
                 paymentCode: method,
@@ -85,5 +125,5 @@ module.exports = targets => {
 
     buildpackTargets.webpackCompiler.tap(compiler => {
         new moduleOverrideWebpackPlugin(componentOverrideMapping).apply(compiler);
-    })
+    });
 };
