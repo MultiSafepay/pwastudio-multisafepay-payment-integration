@@ -59,7 +59,7 @@ Stores → Configuration → MultiSafepay → General Settings → Advanced Sett
    yarn install && yarn watch:venia
    ```
 5. Explore the checkout in your Venia application:
-   <img width="1000" alt="Screenshot 2021-03-12 at 12 56 42" src="https://user-images.githubusercontent.com/78361324/110949265-b0124680-8342-11eb-8d99-55c926e76f3d.png">
+ <img width="1000" alt="Screenshot 2021-03-25 at 12 56 46" src="https://user-images.githubusercontent.com/78361324/112469889-4a728100-8d6a-11eb-98dd-7429f1154952.png">
 
 
 ## Support
