@@ -50,7 +50,7 @@ export const useBasePayment = props => {
         updatePaymentMethod({
             variables: {cartId, selectedMethod}
         });
-    }, [updatePaymentMethod, cartId]);
+    }, [updatePaymentMethod, cartId, selectedMethod]);
 
     useEffect(() => {
         const paymentMethodMutationCompleted =
