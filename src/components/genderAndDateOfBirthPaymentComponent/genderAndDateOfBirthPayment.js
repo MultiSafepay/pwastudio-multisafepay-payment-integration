@@ -12,7 +12,7 @@ import {mergeClasses} from '@magento/venia-ui/lib/classify';
 import {shape, string, bool, func} from 'prop-types';
 import BillingAddress from '@magento/venia-ui/lib/components/CheckoutPage/BillingAddress';
 
-import {useAfterpayIn3Payment} from '../../talons/useAfterpayIn3Payment';
+import {useGenderAndDateOfBirthPayment} from '../../talons/useGenderAndDateOfBirthPayment';
 import defaultClasses from '../basePaymentComponent/basePayment.css';
 import {FormattedMessage, useIntl} from 'react-intl';
 import Select from '@magento/venia-ui/lib/components/Select';
@@ -22,7 +22,7 @@ import {hasLengthAtLeast, isRequired} from "@magento/venia-ui/lib/util/formValid
 import {validateDateOfBirth} from "../../utils/paymentFormValidator";
 import combine from "@magento/venia-ui/lib/util/combineValidators";
 
-const AfterpayIn3Payment = props => {
+const GenderAndDateOfBirthPayment = props => {
     const classes = mergeClasses(defaultClasses, props.classes);
     const {formatMessage} = useIntl();
     const genders = [
@@ -55,7 +55,7 @@ const AfterpayIn3Payment = props => {
         onBillingAddressChangedSuccess,
         handleGenderSelection,
         handleDobInputChange
-    } = useAfterpayIn3Payment({
+    } = useGenderAndDateOfBirthPayment({
         resetShouldSubmit,
         onPaymentSuccess,
         onPaymentError,
@@ -67,27 +67,27 @@ const AfterpayIn3Payment = props => {
 
     return (
         <div className={classes.root}>
-            <Label htmlFor={classes.multisafepayAfterpayIn3Gender}>
+            <Label htmlFor={classes.multisafepayGender}>
                 {genderSelectLabel}
             </Label>
             <Select
-                field="multisafepayAfterpayIn3Gender"
+                field="multisafepayGender"
                 items={genders}
                 onValueChange={handleGenderSelection}
             />
 
-            <Label htmlFor={classes.multisafepayAfterpayIn3Dob}>
+            <Label htmlFor={classes.multisafepayDob}>
                 {dobInputLabel}
             </Label>
             <TextInput
-                field="multisafepayAfterpayIn3Dob"
+                field="multisafepayDob"
                 validate={combine([
                     isRequired,
                     [hasLengthAtLeast, 8],
                     validateDateOfBirth
                 ])}
                 placeholder={formatMessage({
-                    id: 'multisafepayAfterpayIn3Dob.enterDob',
+                    id: 'multisafepayDob.enterDob',
                     defaultMessage: 'dd-mm-yyyy'
                 })}
                 onValueChange={handleDobInputChange}
@@ -109,7 +109,7 @@ const AfterpayIn3Payment = props => {
     );
 };
 
-AfterpayIn3Payment.propTypes = {
+GenderAndDateOfBirthPayment.propTypes = {
     classes: shape({root: string}),
     shouldSubmit: bool.isRequired,
     onPaymentSuccess: func,
@@ -117,4 +117,4 @@ AfterpayIn3Payment.propTypes = {
     resetShouldSubmit: func.isRequired
 };
 
-export default AfterpayIn3Payment;
+export default GenderAndDateOfBirthPayment;

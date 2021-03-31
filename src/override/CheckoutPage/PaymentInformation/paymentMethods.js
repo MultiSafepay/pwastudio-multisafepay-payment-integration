@@ -49,7 +49,7 @@ const PaymentMethods = props => {
     }
 
     const radios = availablePaymentMethods
-        .map(({code, title, multisafepay_available_issuers}, index) => {
+        .map(({code, title}, index) => {
             // If we don't have an implementation for a method type, ignore it.
             if (!Object.keys(payments).includes(code)) {
                 return;

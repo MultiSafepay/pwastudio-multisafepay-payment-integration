@@ -53,7 +53,7 @@ export const useIdealPayment = props => {
         value => {
             setIssuer(value);
         },
-        [cartId, setIssuer]
+        [setIssuer]
     );
 
     /**
@@ -63,7 +63,7 @@ export const useIdealPayment = props => {
         updatePaymentMethod({
             variables: {cartId, selectedMethod, issuer}
         });
-    }, [updatePaymentMethod, cartId, issuer]);
+    }, [updatePaymentMethod, cartId, selectedMethod, issuer]);
 
     useEffect(() => {
         const paymentMethodMutationCompleted =

@@ -19,7 +19,7 @@ import DEFAULT_OPERATIONS from './basePayment.gql';
  * @param props
  * @returns {{onBillingAddressChangedError: (function(): void), onBillingAddressChangedSuccess: (function(): void), handleIssuerSelection: (function(*=): void)}}
  */
-export const useAfterpayIn3Payment = props => {
+export const useGenderAndDateOfBirthPayment = props => {
     const defaultGender = 'mr';
     const operations = mergeOperations(DEFAULT_OPERATIONS, props.operations);
 
@@ -56,14 +56,14 @@ export const useAfterpayIn3Payment = props => {
         value => {
             setGender(value);
         },
-        [cartId, setGender]
+        [setGender]
     );
 
     const handleDobInputChange = useCallback(
         value => {
             setDateOfBirth(value);
         },
-        [cartId, setDateOfBirth]
+        [setDateOfBirth]
     );
 
     /**

@@ -15,7 +15,7 @@ MultiSafepay is a collecting payment service provider which means we take care o
 ## Supported Payment Methods ##
 The supported Payment Methods & Giftcards for this plugin can be found over here: [Payment Methods & Giftcards](https://docs.multisafepay.com/integrations/ecommerce-integrations/magento2/faq/available-payment-methods-magento2/)   
 
-**Note:** this extension supports all Payment Methods & Giftcards mentioned above, except: Request To Pay, Direct Debit, E-invoicing, Pay After Delivery. You can easily implement this payment methods as well using the Ideal, Afterpay or in3 components in this plugin.
+**Note:** this extension supports all Payment Methods & Giftcards mentioned above, except: Request To Pay, Direct Debit, E-invoicing and Pay After Delivery. You can easily implement these payment methods as well using the Ideal, Afterpay or in3 components in this plugin.
 
 ## Requirements
 - To use the plugin you need a MultiSafepay account. You can create a test account on https://testmerchant.multisafepay.com/signup
@@ -44,16 +44,21 @@ Stores → Configuration → MultiSafepay → General Settings → Advanced Sett
    mkdir multisafepay-payment-integration
    ```
    4.3. Clone all extension files from this repository in *multisafepay-payment-integration* folder
-   4.4. Link extension in venia-concept package.json. Go to the venia-concept folder and open *package.json*:
+   4.4. Link extension in venia-concept package.json.   
+   Go to the venia-concept folder and open *package.json:*
+   
    ```bash 
    cd your_project/packages/venia-concept
    ```
+   
    4.5. Add next dependency:
+   
    ```bash 
    "dependencies": {
         "@multisafepay/multisafepay-payment-integration": "link:../extensions/multisafepay-payment-integration"
     },
    ```
+   
    4.6. Go back to the project root folder and execute next commands:
    ```bash 
    yarn install && yarn watch:venia

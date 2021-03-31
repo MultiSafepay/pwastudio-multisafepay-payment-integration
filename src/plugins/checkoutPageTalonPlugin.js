@@ -7,7 +7,7 @@
  * @link https://github.com/MultiSafepay/pwastudio-multisafepay-payment-integration
  *
  */
-import React, {useCallback, useEffect, useMemo, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {AlertCircle as AlertCircleIcon} from 'react-feather';
 
 import {useCartContext} from '@magento/peregrine/lib/context/cart';
@@ -31,7 +31,6 @@ const wrapUseCheckoutPage = (original) => {
         const operations = mergeOperations(DEFAULT_OPERATIONS, MULTISAFEPAY_OPERATIONS);
         const result = original(...args);
         const errorIcon = <Icon src={AlertCircleIcon} size={20}/>;
-        let processedOrderData = [];
 
         const {
             activeContent,
@@ -200,7 +199,11 @@ const wrapUseCheckoutPage = (original) => {
             removeCart,
             orderButtonPress,
             setOrderButtonPress,
-            placeOrderData
+            placeOrderData,
+            addToast,
+            errorIcon,
+            resetReviewOrderButtonClicked,
+            setCheckoutStep
         ]);
 
         const orderMultisafepayUrlData =

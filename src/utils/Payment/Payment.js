@@ -12,25 +12,13 @@
  * @param {String} paymentCode
  */
 export const isMultisafepayPayment = (paymentCode) => {
-    if (paymentCode
-        && (paymentCode.includes('multisafepay_') || paymentCode === 'multisafepay')
-    ) {
-        return true;
-    }
-
-    return false;
+    return !!(paymentCode && (paymentCode.includes('multisafepay_') || paymentCode === 'multisafepay'));
 };
 
 /**
  * @param {String} paymentCode
  */
 export const isMultisafepayRecurringPayment = (paymentCode) => {
-    if (paymentCode
-        && paymentCode.includes('multisafepay_')
-        && (paymentCode.includes('_recurring') || paymentCode.includes('_vault'))
-    ) {
-        return true;
-    }
-
-    return false;
+    return paymentCode && paymentCode.includes('multisafepay_')
+        && (paymentCode.includes('_recurring') || paymentCode.includes('_vault'));
 };

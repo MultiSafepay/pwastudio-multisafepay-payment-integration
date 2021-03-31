@@ -7,4 +7,4 @@
  * @link https://github.com/MultiSafepay/pwastudio-multisafepay-payment-integration
  *
  */
-export {default} from './afterpayIn3Payment';
+export {default} from './genderAndDateOfBirthPayment';

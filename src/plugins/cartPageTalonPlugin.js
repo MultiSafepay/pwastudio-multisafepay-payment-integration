@@ -91,7 +91,10 @@ const wrapUseCartPage = (original) => {
                 restoreQuoteCalled,
                 createCart,
                 clearCartId,
-                saveCartId
+                saveCartId,
+                storage,
+                addToast,
+                errorIcon
             ]);
 
             if (restoreCartId !== restoredCartId && !restoreQuoteData) {
