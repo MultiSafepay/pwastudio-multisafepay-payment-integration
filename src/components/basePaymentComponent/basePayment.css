@@ -1,0 +1,34 @@
+/**
+ * Copyright © 2021 MultiSafepay, Inc. All rights reserved.
+ * See DISCLAIMER.md for disclaimer details.
+ *
+ * @license OSL-3.0 (Open Software License ("OSL") v. 3.0)
+ * @package @multisafepay/multisafepay-payment-integration
+ * @link https://github.com/MultiSafepay/pwastudio-multisafepay-payment-integration
+ *
+ */
+.root {
+    padding-top: 1.125rem;
+}
+
+.title {
+    font-weight: var(--venia-global-fontWeight-semibold);
+}
+
+.mailingAddressTitle {
+    font-weight: var(--venia-global-fontWeight-semibold);
+    padding-top: 1rem;
+}
+
+.note {
+    padding: 1rem 0;
+}
+
+.formatAddress {
+    padding: 0.5rem 0;
+}
+
+.addressLine {
+    display: block;
+    padding-bottom: 0.5rem;
+}
