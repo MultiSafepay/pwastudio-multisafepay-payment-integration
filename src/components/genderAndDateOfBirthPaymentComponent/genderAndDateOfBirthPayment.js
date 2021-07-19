@@ -101,6 +101,7 @@ const GenderAndDateOfBirthPayment = props => {
                 />
             </p>
             <BillingAddress
+                resetShouldSubmit={resetShouldSubmit}
                 shouldSubmit={props.shouldSubmit}
                 onBillingAddressChangedError={onBillingAddressChangedError}
                 onBillingAddressChangedSuccess={onBillingAddressChangedSuccess}

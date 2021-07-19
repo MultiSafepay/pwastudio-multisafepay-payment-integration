@@ -54,6 +54,7 @@ const BasePayment = props => {
             </p>
             <BillingAddress
                 shouldSubmit={props.shouldSubmit}
+                resetShouldSubmit={resetShouldSubmit}
                 onBillingAddressChangedError={onBillingAddressChangedError}
                 onBillingAddressChangedSuccess={onBillingAddressChangedSuccess}
             />
