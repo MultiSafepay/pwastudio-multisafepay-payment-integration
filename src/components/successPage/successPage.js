@@ -21,7 +21,8 @@ import confirmationPageClasses
 import {useSuccessPage} from "../../talons/successPage/useSuccessPage";
 import LoadingIndicator from "@magento/venia-ui/lib/components/LoadingIndicator";
 import CreateAccount from "@magento/venia-ui/lib/components/CheckoutPage/OrderConfirmationPage/createAccount";
-import {Redirect} from '@magento/venia-drivers';
+import { Redirect } from 'react-router-dom';
+
 
 const SuccessPage = props => {
     const {order: orderNumber, maskedId} = useParams();

@@ -92,8 +92,10 @@ const PaymentMethods = props => {
                         classes={{image: classes.image}}
                         src={imageSrc}
                         width={'50px'}
+                        height={'auto'}
                     />
                     <Radio
+                        id={code}
                         label={title}
                         value={code}
                         classes={{
@@ -106,6 +108,7 @@ const PaymentMethods = props => {
             ) : (
                 <div key={code} className={classes.payment_method}>
                     <Radio
+                        id={code}
                         label={title}
                         value={code}
                         classes={{
