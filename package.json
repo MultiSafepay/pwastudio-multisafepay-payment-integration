@@ -1,7 +1,7 @@
 {
   "name": "@multisafepay/multisafepay-payment-integration",
   "author": "integration@multisafepay.com",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "main": "src/index.js",
   "pwa-studio": {
     "targets": {
@@ -22,9 +22,9 @@
     ]
   },
   "peerDependencies": {
-    "@magento/peregrine": "11.0.0-alpha.3",
-    "@magento/pwa-buildpack": "10.0.0-alpha.3",
-    "@magento/venia-ui": "8.0.0-alpha.3",
+    "@magento/peregrine": "~11.0.0",
+    "@magento/pwa-buildpack": "~10.0.0",
+    "@magento/venia-ui": "~8.0.0",
     "react": "~17.0.1",
     "react-intl": "~5.7.0",
     "react-router-dom": "~5.1.0"
@@ -35,8 +35,8 @@
     }
   },
   "dependencies": {
-    "@magento/peregrine": "11.0.0-alpha.3",
-    "@magento/pwa-buildpack": "10.0.0-alpha.3",
-    "@magento/venia-ui": "8.0.0-alpha.3"
+    "@magento/peregrine": "~11.0.0",
+    "@magento/pwa-buildpack": "~10.0.0",
+    "@magento/venia-ui": "~8.0.0"
   }
 }
