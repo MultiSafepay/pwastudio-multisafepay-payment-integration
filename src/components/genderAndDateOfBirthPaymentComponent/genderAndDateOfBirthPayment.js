@@ -95,9 +95,7 @@ const GenderAndDateOfBirthPayment = props => {
             <p className={classes.note}>
                 <FormattedMessage
                     id={'multiSafepayPayment.note'}
-                    defaultMessage={
-                        'Note: You will be redirected to the payment page.'
-                    }
+                    defaultMessage={'Note: You will be redirected to the payment page.'}
                 />
             </p>
             <BillingAddress
