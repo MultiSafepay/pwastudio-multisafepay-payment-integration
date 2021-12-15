@@ -33,5 +33,8 @@
     "hooks": {
       "pre-commit": "lint-staged"
     }
+  },
+  "devDependencies": {
+    "install-peers-cli": "^2.2.0"
   }
 }
