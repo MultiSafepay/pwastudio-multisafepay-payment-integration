@@ -38,9 +38,7 @@
       "pre-commit": "lint-staged"
     }
   },
-  "dependencies": {
-    "@magento/peregrine": "~11.0.0",
-    "@magento/pwa-buildpack": "~10.0.0",
-    "@magento/venia-ui": "~8.0.0"
+  "devDependencies": {
+    "install-peers-cli": "^2.2.0"
   }
 }
