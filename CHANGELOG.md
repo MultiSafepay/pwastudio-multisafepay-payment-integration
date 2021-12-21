@@ -6,6 +6,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 ### Fixed
+- Fixed css include on PWA studio v12.1 (thanks to @yaroslav-qlicks)
 - Fixed undefined command: "install-peers" (thanks to @yaroslav-qlicks)
 
 ## [1.0.2] - 2021-11-26
