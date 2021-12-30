@@ -6,6 +6,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 ### Fixed
+- Fixed issue where cannot destructure property 'image' fix-undefined-method-dataonalData' as it is undefined (thanks to @yaroslav-qlicks)
 - Fixed css include on PWA studio v12.1 (thanks to @yaroslav-qlicks)
 - Fixed undefined command: "install-peers" (thanks to @yaroslav-qlicks)
 
