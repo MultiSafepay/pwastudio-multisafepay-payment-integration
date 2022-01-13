@@ -12,7 +12,7 @@ import {shape, string, bool, func} from 'prop-types';
 import {RadioGroup} from 'informed';
 import {useIntl} from 'react-intl';
 import {usePaymentMethods} from '@magento/peregrine/lib/talons/CheckoutPage/PaymentInformation/usePaymentMethods';
-import {mergeClasses} from '@magento/venia-ui/lib/classify';
+import {useStyle} from '@magento/venia-ui/lib/classify';
 import {isMultisafepayPayment} from '../../../utils/Payment';
 import Radio from '@magento/venia-ui/lib/components/RadioGroup/radio';
 import paymentMethodOperations from './paymentMethods.gql';
@@ -30,9 +30,9 @@ const PaymentMethods = props => {
     } = props;
 
     const {formatMessage} = useIntl();
-    const classes = mergeClasses(defaultClasses, propClasses);
+    const classes = useStyle(defaultClasses, propClasses);
     const talonProps = usePaymentMethods({
-        ...paymentMethodOperations
+        operations: paymentMethodOperations.queries
     });
 
     const {
@@ -61,6 +61,7 @@ const PaymentMethods = props => {
                 multisafepayPreselectedMethod = code;
             }
 
+            const id = `paymentMethod--${code}`;
             const isSelected = currentSelectedPaymentMethod === code;
             const PaymentMethodComponent = payments[code];
 
@@ -86,7 +87,7 @@ const PaymentMethods = props => {
             const {image: imageSrc} = multisafepayPaymentAdditionalData;
 
             return isMultisafepayPayment(code) && imageSrc ? (
-                <div key={code} className={classes.payment_method}>
+                <div key={id} className={classes.payment_method}>
                     <Image
                         alt={title}
                         classes={{image: classes.image}}
@@ -95,7 +96,7 @@ const PaymentMethods = props => {
                         height={'auto'}
                     />
                     <Radio
-                        id={code}
+                        id={id}
                         label={title}
                         value={code}
                         classes={{
@@ -106,9 +107,9 @@ const PaymentMethods = props => {
                     {renderedComponent}
                 </div>
             ) : (
-                <div key={code} className={classes.payment_method}>
+                <div key={id} className={classes.payment_method}>
                     <Radio
-                        id={code}
+                        id={id}
                         label={title}
                         value={code}
                         classes={{
@@ -142,6 +143,7 @@ const PaymentMethods = props => {
     return (
         <div className={classes.root}>
             <RadioGroup
+                classes={{ root: classes.radio_group }}
                 field="selectedPaymentMethod"
                 initialValue={multisafepayPreselectedMethod ? multisafepayPreselectedMethod : initialSelectedMethod}
             >
