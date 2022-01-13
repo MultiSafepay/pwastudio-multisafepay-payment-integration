@@ -55,7 +55,7 @@ const PaymentMethods = props => {
                 return;
             }
 
-            const multisafepayPaymentAdditionalData = availablePaymentMethods[index].multisafepay_additional_data;
+            const multisafepayPaymentAdditionalData = availablePaymentMethods[index].multisafepay_additional_data || {};
 
             if (isMultisafepayPayment(code) && multisafepayPaymentAdditionalData.is_preselected) {
                 multisafepayPreselectedMethod = code;
