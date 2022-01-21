@@ -26,8 +26,8 @@
     "@magento/pwa-buildpack": "~11.0.0",
     "@magento/venia-ui": "~9.1.0",
     "react": "~17.0.1",
-    "react-intl": "~5.7.0",
-    "react-router-dom": "~5.1.0"
+    "react-intl": "~5.20.0",
+    "react-router-dom": "~5.2.0"
   },
   "husky": {
     "hooks": {
