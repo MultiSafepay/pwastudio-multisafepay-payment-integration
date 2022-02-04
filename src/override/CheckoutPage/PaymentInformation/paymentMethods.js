@@ -9,11 +9,12 @@
  */
 import React from 'react';
 import {shape, string, bool, func} from 'prop-types';
-import {RadioGroup} from 'informed';
 import {useIntl} from 'react-intl';
 import {usePaymentMethods} from '@magento/peregrine/lib/talons/CheckoutPage/PaymentInformation/usePaymentMethods';
+
 import {useStyle} from '@magento/venia-ui/lib/classify';
 import {isMultisafepayPayment} from '../../../utils/Payment';
+import RadioGroup from '@magento/venia-ui/lib/components/RadioGroup';
 import Radio from '@magento/venia-ui/lib/components/RadioGroup/radio';
 import paymentMethodOperations from './paymentMethods.gql';
 import defaultClasses from '@magento/venia-ui/lib/components/CheckoutPage/PaymentInformation/paymentMethods.module.css';
