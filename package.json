@@ -1,7 +1,11 @@
 {
   "name": "@multisafepay/multisafepay-payment-integration",
   "author": "integration@multisafepay.com",
-  "version": "1.0.1",
+  "version": "1.0.4-1",
+  "publishConfig": {
+    "access": "restricted",
+    "registry": "https://npm.qlicks.nl"
+  },
   "main": "src/index.js",
   "pwa-studio": {
     "targets": {
@@ -22,21 +26,19 @@
     ]
   },
   "peerDependencies": {
-    "@magento/peregrine": "~11.0.0",
-    "@magento/pwa-buildpack": "~10.0.0",
-    "@magento/venia-ui": "~8.0.0",
+    "@magento/peregrine": "~12.2.0",
+    "@magento/pwa-buildpack": "~11.1.0",
+    "@magento/venia-ui": "~9.2.0",
     "react": "~17.0.1",
-    "react-intl": "~5.7.0",
-    "react-router-dom": "~5.1.0"
+    "react-intl": "~5.20.0",
+    "react-router-dom": "~5.2.0"
   },
   "husky": {
     "hooks": {
       "pre-commit": "lint-staged"
     }
   },
-  "dependencies": {
-    "@magento/peregrine": "~11.0.0",
-    "@magento/pwa-buildpack": "~10.0.0",
-    "@magento/venia-ui": "~8.0.0"
+  "devDependencies": {
+    "install-peers-cli": "^2.2.0"
   }
 }

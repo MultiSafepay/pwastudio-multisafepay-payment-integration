@@ -36,7 +36,7 @@ export const flatten = data => {
         firstname: address.firstname,
         lastname: address.lastname,
         postcode: address.postcode,
-        region: address.region.label,
+        region: address.region.label || '',
         shippingMethod,
         street: address.street,
         totalItemQuantity: cart.total_quantity

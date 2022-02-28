@@ -9,14 +9,15 @@
  */
 import React from 'react';
 import {shape, string, bool, func} from 'prop-types';
-import {RadioGroup} from 'informed';
 import {useIntl} from 'react-intl';
 import {usePaymentMethods} from '@magento/peregrine/lib/talons/CheckoutPage/PaymentInformation/usePaymentMethods';
-import {mergeClasses} from '@magento/venia-ui/lib/classify';
+
+import {useStyle} from '@magento/venia-ui/lib/classify';
 import {isMultisafepayPayment} from '../../../utils/Payment';
+import RadioGroup from '@magento/venia-ui/lib/components/RadioGroup';
 import Radio from '@magento/venia-ui/lib/components/RadioGroup/radio';
 import paymentMethodOperations from './paymentMethods.gql';
-import defaultClasses from '@magento/venia-ui/lib/components/CheckoutPage/PaymentInformation/paymentMethods.css';
+import defaultClasses from '@magento/venia-ui/lib/components/CheckoutPage/PaymentInformation/paymentMethods.module.css';
 import payments from '@magento/venia-ui/lib/components/CheckoutPage/PaymentInformation/paymentMethodCollection';
 import Image from '@magento/venia-ui/lib/components/Image';
 
@@ -30,9 +31,10 @@ const PaymentMethods = props => {
     } = props;
 
     const {formatMessage} = useIntl();
-    const classes = mergeClasses(defaultClasses, propClasses);
+    const classes = useStyle(defaultClasses, propClasses);
+
     const talonProps = usePaymentMethods({
-        ...paymentMethodOperations
+        operations: paymentMethodOperations.queries
     });
 
     const {
@@ -55,12 +57,13 @@ const PaymentMethods = props => {
                 return;
             }
 
-            const multisafepayPaymentAdditionalData = availablePaymentMethods[index].multisafepay_additional_data;
+            const multisafepayPaymentAdditionalData = availablePaymentMethods[index].multisafepay_additional_data || {};
 
             if (isMultisafepayPayment(code) && multisafepayPaymentAdditionalData.is_preselected) {
                 multisafepayPreselectedMethod = code;
             }
 
+            const id = `paymentMethod--${code}`;
             const isSelected = currentSelectedPaymentMethod === code;
             const PaymentMethodComponent = payments[code];
 
@@ -86,7 +89,7 @@ const PaymentMethods = props => {
             const {image: imageSrc} = multisafepayPaymentAdditionalData;
 
             return isMultisafepayPayment(code) && imageSrc ? (
-                <div key={code} className={classes.payment_method}>
+                <div key={id} className={classes.payment_method}>
                     <Image
                         alt={title}
                         classes={{image: classes.image}}
@@ -95,7 +98,7 @@ const PaymentMethods = props => {
                         height={'auto'}
                     />
                     <Radio
-                        id={code}
+                        id={id}
                         label={title}
                         value={code}
                         classes={{
@@ -106,9 +109,9 @@ const PaymentMethods = props => {
                     {renderedComponent}
                 </div>
             ) : (
-                <div key={code} className={classes.payment_method}>
+                <div key={id} className={classes.payment_method}>
                     <Radio
-                        id={code}
+                        id={id}
                         label={title}
                         value={code}
                         classes={{
@@ -142,6 +145,7 @@ const PaymentMethods = props => {
     return (
         <div className={classes.root}>
             <RadioGroup
+                classes={{ root: classes.radio_group }}
                 field="selectedPaymentMethod"
                 initialValue={multisafepayPreselectedMethod ? multisafepayPreselectedMethod : initialSelectedMethod}
             >
