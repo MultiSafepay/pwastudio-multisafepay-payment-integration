@@ -20,7 +20,7 @@ import DEFAULT_OPERATIONS from './basePayment.gql';
  * @returns {{onBillingAddressChangedError: (function(): void), onBillingAddressChangedSuccess: (function(): void), handleIssuerSelection: (function(*=): void)}}
  */
 export const useIdealPayment = props => {
-    const defaultIssuer = '3151';
+    const defaultIssuer = '0761';
     const operations = mergeOperations(DEFAULT_OPERATIONS, props.operations);
 
     const {
