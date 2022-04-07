@@ -60,8 +60,10 @@ const SuccessPage = props => {
 
     const {flatData, data, isSignedIn, isLoading, hasError} = talonProps;
 
-    if (hasError) {
-        return <Redirect to="/"/>;
+    if (!isLoading && (hasError || !flatData)) {
+        return <div>
+            {commonComponent}
+        </div>;
     }
 
     if (isLoading || !flatData || !data) {
