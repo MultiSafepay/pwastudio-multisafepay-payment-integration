@@ -61,7 +61,8 @@ export const useSuccessPage = props => {
         skip: !cartId,
         variables: {
             cartId
-        }
+        },
+        errorPolicy: 'ignore'
     });
 
     if (orderDetailsError) {
@@ -76,7 +77,7 @@ export const useSuccessPage = props => {
 
     if (!orderDetailsData || orderDetailsLoading) {
         return {
-            flatData: [],
+            flatData: null,
             isSignedIn,
             isLoading: true,
             hasError: orderDetailsError
@@ -84,6 +85,15 @@ export const useSuccessPage = props => {
     }
 
     clearCartDataFromCache(apolloClient);
+
+    if (!orderDetailsData.multisafepayCart) {
+        return {
+            flatData: null,
+            isSignedIn,
+            isLoading: orderDetailsLoading,
+            hasError: orderDetailsError
+        };
+    }
 
     return {
         flatData: flatten(orderDetailsData),
