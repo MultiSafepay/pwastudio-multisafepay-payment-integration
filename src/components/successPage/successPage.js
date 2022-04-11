@@ -8,11 +8,11 @@
  *
  */
 import React from 'react';
-import {mergeClasses} from '@magento/venia-ui/lib/classify';
+import {useStyle} from '@magento/venia-ui/lib/classify';
 import {object, shape, string} from 'prop-types';
 import {useParams} from 'react-router';
 
-import defaultClasses from './successPage.css';
+import defaultClasses from './successPage.module.css';
 import {StoreTitle} from "@magento/venia-ui/lib/components/Head";
 import {FormattedMessage, useIntl} from "react-intl";
 import ItemsReview from "@magento/venia-ui/lib/components/CheckoutPage/ItemsReview";
@@ -21,13 +21,12 @@ import confirmationPageClasses
 import {useSuccessPage} from "../../talons/successPage/useSuccessPage";
 import LoadingIndicator from "@magento/venia-ui/lib/components/LoadingIndicator";
 import CreateAccount from "@magento/venia-ui/lib/components/CheckoutPage/OrderConfirmationPage/createAccount";
-import { Redirect } from 'react-router-dom';
 
 
 const SuccessPage = props => {
     const {order: orderNumber, maskedId} = useParams();
     const {formatMessage} = useIntl();
-    const classes = mergeClasses(defaultClasses, props.classes, confirmationPageClasses);
+    const classes = useStyle(defaultClasses, props.classes, confirmationPageClasses);
     const talonProps = useSuccessPage({
         orderNumber,
         maskedId
