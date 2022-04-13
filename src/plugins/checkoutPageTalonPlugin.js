@@ -218,6 +218,7 @@ const wrapUseCheckoutPage = (original) => {
         }
 
         return {
+            ...result,
             activeContent,
             availablePaymentMethods,
             cartItems,
