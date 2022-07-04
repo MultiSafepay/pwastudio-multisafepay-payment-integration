@@ -39,7 +39,8 @@ const IdealPayment = props => {
     const {
         onBillingAddressChangedError,
         onBillingAddressChangedSuccess,
-        handleIssuerSelection
+        handleIssuerSelection,
+        issuer
     } = useIdealPayment({
         resetShouldSubmit,
         onPaymentSuccess,
@@ -60,6 +61,7 @@ const IdealPayment = props => {
             <Select
                 field="multisafepayIdealIssuer"
                 items={issuers}
+                initialValue={issuer}
                 onValueChange={handleIssuerSelection}
             />
             <p className={classes.note}>
