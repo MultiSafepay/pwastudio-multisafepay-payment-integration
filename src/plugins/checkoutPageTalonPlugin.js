@@ -7,7 +7,7 @@
  * @link https://github.com/MultiSafepay/pwastudio-multisafepay-payment-integration
  *
  */
-import React, {useCallback, useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useState, useMemo} from 'react';
 import {AlertCircle as AlertCircleIcon} from 'react-feather';
 
 import {useCartContext} from '@magento/peregrine/lib/context/cart';
@@ -25,6 +25,7 @@ import {clearCartDataFromCache} from "@magento/peregrine/lib/Apollo/clearCartDat
 import {CHECKOUT_STEP} from "@magento/peregrine/lib/talons/CheckoutPage/useCheckoutPage";
 import mergeOperations from "@magento/peregrine/lib/util/shallowMerge";
 import Icon from "@magento/venia-ui/lib/components/Icon";
+import CheckoutError from "@magento/peregrine/lib/talons/CheckoutPage/CheckoutError";
 
 const wrapUseCheckoutPage = (original) => {
     return function useCheckoutPage(...args) {
@@ -79,7 +80,19 @@ const wrapUseCheckoutPage = (original) => {
                 loading: placeOrderLoading,
                 called: placeOrderCalled
             }
-        ] = useMutation(placeMultisafepayOrderMutation);
+        ] = useMutation(placeMultisafepayOrderMutation, {errorPolicy: "all"});
+
+        const checkoutError = useMemo(() => {
+            if (placeOrderError) {
+                addToast({
+                    type: 'error',
+                    icon: errorIcon,
+                    message: placeOrderError.message,
+                    dismissable: true,
+                    timeout: 7000
+                });
+            }
+        }, [placeOrderError]);
 
         const [orderButtonPress, setOrderButtonPress] = useState();
 
@@ -122,7 +135,7 @@ const wrapUseCheckoutPage = (original) => {
                         }
                     });
 
-                    if (result) {
+                    if (result && !result.errors) {
                         const orderData = result.data;
                         const orderMultisafepayUrlData =
                             (orderData && orderData.placeOrder.order.multisafepay_payment_url) || null;
@@ -178,10 +191,12 @@ const wrapUseCheckoutPage = (original) => {
                         }
                     }
                 } catch (err) {
-                    console.error(
-                        'An error occurred during when placing the order',
-                        err
-                    );
+                    if (process.env.NODE_ENV !== 'production') {
+                        console.error(
+                            'An error occurred during when placing the order',
+                            err
+                        );
+                    }
                     resetReviewOrderButtonClicked();
                     setCheckoutStep(CHECKOUT_STEP.PAYMENT);
                 }
@@ -209,7 +224,7 @@ const wrapUseCheckoutPage = (original) => {
         ]);
 
         const orderMultisafepayUrlData =
-            (placeOrderData && placeOrderData.placeOrder.order.multisafepay_payment_url) || null;
+            (!placeOrderError && placeOrderData && placeOrderData.placeOrder.order.multisafepay_payment_url) || null;
 
         if (orderMultisafepayUrlData && (orderMultisafepayUrlData.payment_url || orderMultisafepayUrlData.error)) {
             return restoreQuoteData && !restoreQuoteLoading ?
@@ -234,7 +249,7 @@ const wrapUseCheckoutPage = (original) => {
             orderDetailsData,
             orderDetailsLoading,
             orderNumber:
-                (placeOrderData && placeOrderData.placeOrder.order.order_number) ||
+                (!placeOrderError && placeOrderData && placeOrderData.placeOrder.order.order_number) ||
                 null,
             placeOrderLoading,
             setCheckoutStep,

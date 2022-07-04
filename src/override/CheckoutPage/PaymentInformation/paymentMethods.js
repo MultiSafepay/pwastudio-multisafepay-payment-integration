@@ -90,35 +90,39 @@ const PaymentMethods = props => {
 
             return isMultisafepayPayment(code) && imageSrc ? (
                 <div key={id} className={classes.payment_method}>
-                    <Image
-                        alt={title}
-                        classes={{image: classes.image}}
-                        src={imageSrc}
-                        width={'50px'}
-                        height={'auto'}
-                    />
-                    <Radio
-                        id={id}
-                        label={title}
-                        value={code}
-                        classes={{
-                            label: classes.radio_label
-                        }}
-                        checked={isSelected}
-                    />
+                    <div className={classes.topRow}>
+                        <Image
+                            alt={title}
+                            classes={{image: classes.image}}
+                            src={imageSrc}
+                            width={'50px'}
+                            height={'auto'}
+                        />
+                        <Radio
+                            id={id}
+                            label={title}
+                            value={code}
+                            classes={{
+                                label: classes.radio_label
+                            }}
+                            checked={isSelected}
+                        />
+                    </div>
                     {renderedComponent}
                 </div>
             ) : (
                 <div key={id} className={classes.payment_method}>
-                    <Radio
-                        id={id}
-                        label={title}
-                        value={code}
-                        classes={{
-                            label: classes.radio_label
-                        }}
-                        checked={isSelected}
-                    />
+                    <div className={classes.topRowOne}>
+                        <Radio
+                            id={id}
+                            label={title}
+                            value={code}
+                            classes={{
+                                label: classes.radio_label
+                            }}
+                            checked={isSelected}
+                        />
+                    </div>
                     {renderedComponent}
                 </div>
             );
