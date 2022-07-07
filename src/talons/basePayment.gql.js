@@ -15,6 +15,7 @@ export const SelectedPaymentMethodsFragment = gql`
         selected_payment_method {
             code
             title
+            purchase_order_number
         }
     }
 `;

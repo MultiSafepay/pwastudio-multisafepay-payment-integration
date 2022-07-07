@@ -1,7 +1,7 @@
 {
   "name": "@multisafepay/multisafepay-payment-integration",
   "author": "integration@multisafepay.com",
-  "version": "1.0.4-7",
+  "version": "1.0.4-8",
   "publishConfig": {
     "access": "restricted",
     "registry": "https://npm.qlicks.nl"
