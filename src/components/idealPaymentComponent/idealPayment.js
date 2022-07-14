@@ -8,7 +8,7 @@
  *
  */
 import React from 'react';
-import {mergeClasses} from '@magento/venia-ui/lib/classify';
+import {useStyle} from "@magento/venia-ui/lib/classify";
 import {shape, string, bool, func} from 'prop-types';
 import BillingAddress from '@magento/venia-ui/lib/components/CheckoutPage/BillingAddress';
 
@@ -24,7 +24,7 @@ import Select from '@magento/venia-ui/lib/components/Select';
  * @constructor
  */
 const IdealPayment = props => {
-    const classes = mergeClasses(defaultClasses, props.classes);
+    const classes = useStyle(defaultClasses, props.classes);
 
     const {
         resetShouldSubmit,
