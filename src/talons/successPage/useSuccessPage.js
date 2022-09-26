@@ -57,7 +57,7 @@ export const useSuccessPage = props => {
         error: orderDetailsError,
         loading: orderDetailsLoading
     } = useQuery(getOrderDetailsQuery, {
-        fetchPolicy: 'cache-and-network',
+        fetchPolicy: 'no-cache',
         skip: !cartId,
         variables: {
             cartId
