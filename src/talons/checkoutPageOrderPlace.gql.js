@@ -10,8 +10,10 @@
 import {gql} from '@apollo/client';
 
 export const PLACE_ORDER = gql`
-    mutation placeOrder($cartId: String!) {
-        placeOrder(input: { cart_id: $cartId }) @connection(key: "placeOrder") {
+    mutation placeOrder($cartId: String!, $applicationName: String, $applicationVersion: String, $pluginVersion: String) {
+        placeOrder(
+            input: { cart_id: $cartId,  application_name: $applicationName, application_version: $applicationVersion, plugin_version: $pluginVersion }
+        ) @connection(key: "placeOrder") {
             order {
                 order_number
                 multisafepay_payment_url {

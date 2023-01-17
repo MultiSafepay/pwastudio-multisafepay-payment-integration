@@ -14,6 +14,8 @@ import {useCartContext} from '@magento/peregrine/lib/context/cart';
 import MULTISAFEPAY_OPERATIONS from '../talons/checkoutPageOrderPlace.gql.js';
 import DEFAULT_OPERATIONS from '@magento/peregrine/lib/talons/CheckoutPage/checkoutPage.gql.js';
 import {useToasts} from '@magento/peregrine';
+import veniaPjson from '@magento/venia-ui/package.json';
+import modulePjson from '../../package.json';
 
 import {
     useApolloClient,
@@ -95,10 +97,16 @@ const wrapUseCheckoutPage = (original) => {
         useEffect(() => {
             async function placeOrderAndCleanup() {
                 try {
+                    const applicationName = 'Venia';
+                    const applicationVersion = veniaPjson.version;
+                    const pluginVersion = modulePjson.version;
                     setOrderButtonPress(false);
                     const result = await placeOrder({
                         variables: {
-                            cartId
+                            cartId,
+                            applicationName,
+                            applicationVersion,
+                            pluginVersion
                         }
                     });
 
