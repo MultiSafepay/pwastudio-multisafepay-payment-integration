@@ -33,29 +33,9 @@ const wrapUseCheckoutPage = (original) => {
         const errorIcon = <Icon src={AlertCircleIcon} size={20}/>;
 
         const {
-            activeContent,
-            availablePaymentMethods,
-            cartItems,
-            checkoutStep,
-            customer,
-            error,
-            hasError,
-            isCartEmpty,
-            isGuestCheckout,
             isLoading,
-            isUpdating,
             setCheckoutStep,
-            setIsUpdating,
-            setShippingInformationDone,
-            scrollShippingInformationIntoView,
-            setShippingMethodDone,
-            scrollShippingMethodIntoView,
-            setPaymentInformationDone,
-            resetReviewOrderButtonClicked,
-            handleReviewOrder,
-            reviewOrderButtonClicked,
-            toggleAddressBookContent,
-            toggleSignInContent
+            resetReviewOrderButtonClicked
         } = result;
 
         const {
@@ -218,18 +198,9 @@ const wrapUseCheckoutPage = (original) => {
         }
 
         return {
-            activeContent,
-            availablePaymentMethods,
-            cartItems,
-            checkoutStep,
-            customer,
-            error,
+            ...result,
             handlePlaceOrder,
-            hasError,
-            isCartEmpty,
-            isGuestCheckout,
             isLoading,
-            isUpdating,
             orderDetailsData,
             orderDetailsLoading,
             orderNumber:
@@ -237,17 +208,7 @@ const wrapUseCheckoutPage = (original) => {
                 null,
             placeOrderLoading,
             setCheckoutStep,
-            setIsUpdating,
-            setShippingInformationDone,
-            scrollShippingInformationIntoView,
-            setShippingMethodDone,
-            scrollShippingMethodIntoView,
-            setPaymentInformationDone,
-            resetReviewOrderButtonClicked,
-            handleReviewOrder,
-            reviewOrderButtonClicked,
-            toggleAddressBookContent,
-            toggleSignInContent
+            resetReviewOrderButtonClicked
         };
     }
 }

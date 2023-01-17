@@ -9,5 +9,7 @@
  */
 module.exports = componentOverride = {
     [`@magento/venia-ui/lib/components/CheckoutPage/PaymentInformation/paymentMethods.js`]:
-        '@multisafepay/multisafepay-payment-integration/src/override/CheckoutPage/PaymentInformation/paymentMethods.js'
+        '@multisafepay/multisafepay-payment-integration/src/override/CheckoutPage/PaymentInformation/paymentMethods.js',
+    [`@magento/peregrine/lib/talons/CheckoutPage/PaymentInformation/usePaymentMethods.js`]:
+        '@multisafepay/multisafepay-payment-integration/src/override/CheckoutPage/PaymentInformation/usePaymentMethods.js',
 };

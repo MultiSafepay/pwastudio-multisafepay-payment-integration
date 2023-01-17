@@ -15,6 +15,11 @@ export const GET_ORDER_DETAILS = gql`
     query getOrderDetails($cartId: String!) {
         multisafepayCart(cart_id: $cartId) {
             id
+            selected_payment_method {
+                purchase_order_number
+                title
+                code
+            }
             ...OrderConfirmationPageFragment
         }
     }

@@ -10,15 +10,11 @@
 import {useUserContext} from '@magento/peregrine/lib/context/user';
 import mergeOperations from "@magento/peregrine/lib/util/shallowMerge";
 import DEFAULT_OPERATIONS from "./successPage.gql";
-import {
-    useQuery,
-    useApolloClient
-} from '@apollo/client';
+import {useQuery} from '@apollo/client';
 import {useToasts} from "@magento/peregrine";
 import {AlertCircle as AlertCircleIcon} from 'react-feather';
 import Icon from "@magento/venia-ui/lib/components/Icon";
 import React from "react";
-import {clearCartDataFromCache} from "@magento/peregrine/lib/Apollo/clearCartDataFromCache";
 
 export const flatten = data => {
     const {multisafepayCart: cart} = data;
@@ -50,14 +46,13 @@ export const useSuccessPage = props => {
     const [, {addToast}] = useToasts();
     const errorIcon = <Icon src={AlertCircleIcon} size={20}/>;
     const [{isSignedIn}] = useUserContext();
-    const apolloClient = useApolloClient();
 
     const {
         data: orderDetailsData,
         error: orderDetailsError,
         loading: orderDetailsLoading
     } = useQuery(getOrderDetailsQuery, {
-        fetchPolicy: 'cache-and-network',
+        fetchPolicy: 'no-cache',
         skip: !cartId,
         variables: {
             cartId
@@ -82,8 +77,6 @@ export const useSuccessPage = props => {
             hasError: orderDetailsError
         };
     }
-
-    clearCartDataFromCache(apolloClient);
 
     return {
         flatData: flatten(orderDetailsData),
