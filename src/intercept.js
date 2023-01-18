@@ -8,7 +8,7 @@
  *
  */
 const moduleOverrideWebpackPlugin = require('./moduleOverrideWebpackPlugin');
-const componentOverrideMapping = require('./componentOverrideMapping')
+const componentOverrideMapping = require('./componentOverrideMapping');
 
 module.exports = targets => {
     const peregrineTargets = targets.of('@magento/peregrine');
@@ -46,7 +46,8 @@ module.exports = targets => {
         'multisafepay_trustly',
         'multisafepay_genericgateway_1',
         'multisafepay_genericgateway_2',
-        'multisafepay_genericgateway_3'
+        'multisafepay_genericgateway_3',
+        'multisafepay_googlepay'
     ];
 
     const giftcardMethods = [
@@ -76,19 +77,25 @@ module.exports = targets => {
     ];
 
     targets.of('@magento/pwa-buildpack').specialFeatures.tap(flags => {
-        flags[targets.name] = {esModules: true, cssModules: true, graphqlQueries: true, i18n: true};
+        flags[targets.name] = {
+            esModules: true,
+            cssModules: true,
+            graphqlQueries: true,
+            i18n: true
+        };
     });
 
-    veniaTargets.routes.tap(
-        routesArray => {
-            routesArray.push({
-                name: 'Checkout Success Page',
-                pattern: '/multisafepay/checkout/success/:order?/maskedId/:maskedId?',
-                path: '@multisafepay/multisafepay-payment-integration/src/components/successPage'
-            });
-
-            return routesArray;
+    veniaTargets.routes.tap(routesArray => {
+        routesArray.push({
+            name: 'Checkout Success Page',
+            pattern:
+                '/multisafepay/checkout/success/:order?/maskedId/:maskedId?',
+            path:
+                '@multisafepay/multisafepay-payment-integration/src/components/successPage'
         });
+
+        return routesArray;
+    });
 
     talonsTarget.tap(talonWrapperConfig => {
         talonWrapperConfig.CheckoutPage.useCheckoutPage.wrapWith(
@@ -102,28 +109,32 @@ module.exports = targets => {
         );
     });
 
-    const gatewaysPath = '@multisafepay/multisafepay-payment-integration/src/components/gateways/',
-        giftcardsPath = '@multisafepay/multisafepay-payment-integration/src/components/giftcards/';
+    const gatewaysPath =
+            '@multisafepay/multisafepay-payment-integration/src/components/gateways/',
+        giftcardsPath =
+            '@multisafepay/multisafepay-payment-integration/src/components/giftcards/';
 
-    paymentMethods.map((method) =>
-        veniaTargets.checkoutPagePaymentTypes.tap(
-            checkoutPagePaymentTypes => checkoutPagePaymentTypes.add({
+    paymentMethods.map(method =>
+        veniaTargets.checkoutPagePaymentTypes.tap(checkoutPagePaymentTypes =>
+            checkoutPagePaymentTypes.add({
                 paymentCode: method,
                 importPath: gatewaysPath + method
-            }),
+            })
         )
     );
 
-    giftcardMethods.map((method) =>
-        veniaTargets.checkoutPagePaymentTypes.tap(
-            checkoutPagePaymentTypes => checkoutPagePaymentTypes.add({
+    giftcardMethods.map(method =>
+        veniaTargets.checkoutPagePaymentTypes.tap(checkoutPagePaymentTypes =>
+            checkoutPagePaymentTypes.add({
                 paymentCode: method,
                 importPath: giftcardsPath + method
-            }),
+            })
         )
     );
 
     buildpackTargets.webpackCompiler.tap(compiler => {
-        new moduleOverrideWebpackPlugin(componentOverrideMapping).apply(compiler);
+        new moduleOverrideWebpackPlugin(componentOverrideMapping).apply(
+            compiler
+        );
     });
 };
