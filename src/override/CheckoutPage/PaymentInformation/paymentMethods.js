@@ -14,6 +14,7 @@ import {useIntl} from 'react-intl';
 import {usePaymentMethods} from '@magento/peregrine/lib/talons/CheckoutPage/PaymentInformation/usePaymentMethods';
 import {useStyle} from '@magento/venia-ui/lib/classify';
 import {isMultisafepayPayment} from '../../../utils/Payment';
+import {validatePaymentMethod} from '../../../utils/Payment';
 import Radio from '@magento/venia-ui/lib/components/RadioGroup/radio';
 import paymentMethodOperations from './paymentMethods.gql';
 import defaultClasses from '@magento/venia-ui/lib/components/CheckoutPage/PaymentInformation/paymentMethods.module.css';
@@ -52,6 +53,10 @@ const PaymentMethods = props => {
         .map(({code, title}, index) => {
             // If we don't have an implementation for a method type, ignore it.
             if (!Object.keys(payments).includes(code)) {
+                return;
+            }
+
+            if (!validatePaymentMethod(code)) {
                 return;
             }
 

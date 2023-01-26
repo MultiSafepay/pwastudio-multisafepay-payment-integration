@@ -22,3 +22,19 @@ export const isMultisafepayRecurringPayment = (paymentCode) => {
     return paymentCode && paymentCode.includes('multisafepay_')
         && (paymentCode.includes('_recurring') || paymentCode.includes('_vault'));
 };
+
+/**
+ * @param {String} paymentCode
+ */
+export const validatePaymentMethod = (paymentCode) => {
+    switch (paymentCode) {
+        case 'multisafepay_applepay':
+            try {
+                return !!(window.ApplePaySession && window.ApplePaySession.canMakePayments());
+            } catch (e) {
+                return false;
+            }
+        default:
+            return true;
+    }
+};
