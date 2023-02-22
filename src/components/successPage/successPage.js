@@ -17,7 +17,7 @@ import {StoreTitle} from "@magento/venia-ui/lib/components/Head";
 import {FormattedMessage, useIntl} from "react-intl";
 import ItemsReview from "@magento/venia-ui/lib/components/CheckoutPage/ItemsReview";
 import confirmationPageClasses
-    from "@magento/venia-ui/lib/components/CheckoutPage/OrderConfirmationPage/orderConfirmationPage.module.css";
+    from "@magento/venia-ui/lib/components/CheckoutPage/OrderConfirmationPage/orderConfirmationPage.css";
 import {useSuccessPage} from "../../talons/successPage/useSuccessPage";
 import LoadingIndicator from "@magento/venia-ui/lib/components/LoadingIndicator";
 import CreateAccount from "@magento/venia-ui/lib/components/CheckoutPage/OrderConfirmationPage/createAccount";

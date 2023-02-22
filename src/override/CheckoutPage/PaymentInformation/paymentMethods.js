@@ -17,7 +17,7 @@ import {isMultisafepayPayment} from '../../../utils/Payment';
 import {validatePaymentMethod} from '../../../utils/Payment';
 import Radio from '@magento/venia-ui/lib/components/RadioGroup/radio';
 import paymentMethodOperations from './paymentMethods.gql';
-import defaultClasses from '@magento/venia-ui/lib/components/CheckoutPage/PaymentInformation/paymentMethods.module.css';
+import defaultClasses from '@magento/venia-ui/lib/components/CheckoutPage/PaymentInformation/paymentMethods.css';
 import payments from '@magento/venia-ui/lib/components/CheckoutPage/PaymentInformation/paymentMethodCollection';
 import Image from '@magento/venia-ui/lib/components/Image';
 
