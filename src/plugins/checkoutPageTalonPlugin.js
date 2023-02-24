@@ -12,7 +12,7 @@ import {AlertCircle as AlertCircleIcon} from 'react-feather';
 
 import {useCartContext} from '@magento/peregrine/lib/context/cart';
 import MULTISAFEPAY_OPERATIONS from '../talons/checkoutPageOrderPlace.gql.js';
-import DEFAULT_OPERATIONS from '@magento/peregrine/lib/talons/CheckoutPage/checkoutPage.gql.js';
+import DEFAULT_OPERATIONS from '@magento/venia-ui/lib/components/CheckoutPage/checkoutPage.gql.js';
 import {useToasts} from '@magento/peregrine';
 import veniaPjson from '@magento/venia-ui/package.json';
 import modulePjson from '../../package.json';
@@ -41,8 +41,8 @@ const wrapUseCheckoutPage = (original) => {
         } = result;
 
         const {
-            createCartMutation,
-            getOrderDetailsQuery,
+            mutations,
+            queries,
             restoreQuoteMutation,
             placeMultisafepayOrderMutation
         } = operations;
@@ -51,7 +51,7 @@ const wrapUseCheckoutPage = (original) => {
 
         const [{cartId}, {createCart, removeCart}] = useCartContext();
         const apolloClient = useApolloClient();
-        const [fetchCartId] = useMutation(createCartMutation);
+        const [fetchCartId] = useMutation(mutations.createCartMutation);
 
         let [
             placeOrder,
@@ -81,7 +81,7 @@ const wrapUseCheckoutPage = (original) => {
                 data: orderDetailsData,
                 loading: orderDetailsLoading
             }
-        ] = useLazyQuery(getOrderDetailsQuery, {
+        ] = useLazyQuery(queries.getOrderDetailsQuery, {
             fetchPolicy: 'no-cache'
         });
 

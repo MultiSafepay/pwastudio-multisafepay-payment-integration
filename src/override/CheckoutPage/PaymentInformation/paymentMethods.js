@@ -12,12 +12,11 @@ import {shape, string, bool, func} from 'prop-types';
 import {RadioGroup} from 'informed';
 import {useIntl} from 'react-intl';
 import {usePaymentMethods} from '@magento/peregrine/lib/talons/CheckoutPage/PaymentInformation/usePaymentMethods';
-import {useStyle} from '@magento/venia-ui/lib/classify';
-import {isMultisafepayPayment} from '../../../utils/Payment';
-import {validatePaymentMethod} from '../../../utils/Payment';
+import {mergeClasses}  from '@magento/venia-ui/lib/classify';
+import {isMultisafepayPayment, validatePaymentMethod} from '../../../utils/Payment';
 import Radio from '@magento/venia-ui/lib/components/RadioGroup/radio';
 import paymentMethodOperations from './paymentMethods.gql';
-import defaultClasses from '@magento/venia-ui/lib/components/CheckoutPage/PaymentInformation/paymentMethods.module.css';
+import defaultClasses from '@magento/venia-ui/lib/components/CheckoutPage/PaymentInformation/paymentMethods.css';
 import payments from '@magento/venia-ui/lib/components/CheckoutPage/PaymentInformation/paymentMethodCollection';
 import Image from '@magento/venia-ui/lib/components/Image';
 
@@ -31,7 +30,7 @@ const PaymentMethods = props => {
     } = props;
 
     const {formatMessage} = useIntl();
-    const classes = useStyle(defaultClasses, propClasses);
+    const classes = mergeClasses(defaultClasses, propClasses);
     const talonProps = usePaymentMethods({
         operations: paymentMethodOperations.queries
     });

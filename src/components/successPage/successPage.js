@@ -13,11 +13,11 @@ import {object, shape, string} from 'prop-types';
 import {useParams} from 'react-router';
 
 import defaultClasses from './successPage.css';
-import {StoreTitle} from "@magento/venia-ui/lib/components/Head";
+import {Title} from "@magento/venia-ui/lib/components/Head";
 import {FormattedMessage, useIntl} from "react-intl";
 import ItemsReview from "@magento/venia-ui/lib/components/CheckoutPage/ItemsReview";
 import confirmationPageClasses
-    from "@magento/venia-ui/lib/components/CheckoutPage/OrderConfirmationPage/orderConfirmationPage.module.css";
+    from "@magento/venia-ui/lib/components/CheckoutPage/OrderConfirmationPage/orderConfirmationPage.css";
 import {useSuccessPage} from "../../talons/successPage/useSuccessPage";
 import LoadingIndicator from "@magento/venia-ui/lib/components/LoadingIndicator";
 import CreateAccount from "@magento/venia-ui/lib/components/CheckoutPage/OrderConfirmationPage/createAccount";
@@ -34,12 +34,12 @@ const SuccessPage = props => {
     });
     const commonComponent = (
         <div className={classes.root}>
-            <StoreTitle>
+            <Title>
                 {formatMessage({
                     id: 'checkoutPage.titleReceipt',
                     defaultMessage: 'Receipt'
                 })}
-            </StoreTitle>
+            </Title>
             <div className={classes.mainContainer}>
                 <h2 className={classes.heading}>
                     <FormattedMessage

@@ -8,7 +8,7 @@
  *
  */
 import {gql} from '@apollo/client';
-import {OrderConfirmationPageFragment} from '@magento/peregrine/lib/talons/CheckoutPage/OrderConfirmationPage/orderConfirmationPageFragments.gql';
+import {OrderConfirmationPageFragment} from '@magento/venia-ui/lib/components/CheckoutPage/OrderConfirmationPage/orderConfirmationPageFragments.gql';
 
 
 export const GET_ORDER_DETAILS = gql`

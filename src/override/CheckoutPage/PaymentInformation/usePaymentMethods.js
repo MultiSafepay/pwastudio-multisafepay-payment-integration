@@ -1,7 +1,7 @@
 import { useCallback } from 'react';
 import { useMutation, useQuery } from '@apollo/client';
-import useFieldState from '@magento/peregrine/lib/hooks/hook-wrappers/useInformedFieldStateWrapper';
-import DEFAULT_OPERATIONS from '@magento/peregrine/lib/talons/CheckoutPage/PaymentInformation/paymentMethods.gql';
+import { useFieldState } from 'informed';
+import DEFAULT_OPERATIONS from '../../../talons/basePayment.gql';
 import mergeOperations from '@magento/peregrine/lib/util/shallowMerge';
 
 import { useCartContext } from '@magento/peregrine/lib/context/cart';
@@ -27,7 +27,7 @@ export const usePaymentMethods = props => {
     );
 
     const availablePaymentMethods =
-        (data && data.cart?.available_payment_methods) || [];
+        (data && data.cart && data.cart.available_payment_methods) || [];
 
     // If there is one payment method, select it by default.
     // If more than one, none should be selected by default.
@@ -35,7 +35,7 @@ export const usePaymentMethods = props => {
         (availablePaymentMethods.length && availablePaymentMethods[0].code) ||
         null;
     const selectedPaymentCode =
-        (data && data.cart?.selected_payment_method?.code) || null;
+        (data && data.cart && data.cart.selected_payment_method && data.cart.selected_payment_method.code) || null;
 
     const initialSelectedMethod =
         availablePaymentMethods.length > 1

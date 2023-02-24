@@ -10,7 +10,7 @@
 import React from 'react';
 import {mergeClasses} from '@magento/venia-ui/lib/classify';
 import {shape, string, bool, func} from 'prop-types';
-import BillingAddress from '@magento/venia-ui/lib/components/CheckoutPage/BillingAddress';
+import BillingAddress from '../billingAddress/billingAddress';
 
 import {useIdealPayment} from '../../talons/useIdealPayment';
 import defaultClasses from '../basePaymentComponent/basePayment.css';
