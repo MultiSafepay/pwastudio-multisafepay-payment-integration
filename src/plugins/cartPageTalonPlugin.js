@@ -63,7 +63,6 @@ const wrapUseCartPage = (original) => {
                         if (restoredQuoteResult) {
                             const {restoreQuote} = restoredQuoteResult.data;
                             storage.setItem('cartId', restoreQuote);
-                            storage.setItem('restoredCart', restoreQuote);
                         }
                     } catch (err) {
                         console.error(
