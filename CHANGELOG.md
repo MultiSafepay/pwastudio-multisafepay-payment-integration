@@ -18,7 +18,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - Now PWA Studio version 9.x.x, 10.x.x, 11.x.x are supported via a different branch than master, due the impossibility to keep retrocompatibility in master branch. Please refer to the [installation guide](https://github.com/MultiSafepay/pwastudio-multisafepay-payment-integration-internal#installation-guide) for more details.
 
-
 ## [1.0.4] - 2022-01-25
 ### Fixed
 - Fixed compatibility issue with PWA Studio 12.1 (thanks to @Watch3ruk)
